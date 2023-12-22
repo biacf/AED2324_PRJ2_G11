@@ -15,12 +15,16 @@ private:
     std::string callsign; /*!< Airline callsign */
     std::string country; /*!< Airline country */
 public:
+    Airline()= default; /*! Default constructor */
     Airline(std::string code, std::string name, std::string callsign, std::string country);
     /*! A getter method @return Airline code */
     std::string getCode(){return code;}
     /*! A getter method @return Airline name */
+    std::string getName(){return name;}
     /*! A getter method @return Airline callsign */
+    std::string getCallsign(){return callsign;}
     /*! A getter method @return Airline country */
+    std::string getCountry(){return country;}
 };
 
 

@@ -34,5 +34,7 @@ add_executable(AED2324_PRJ2_G11 code/main.cpp
         code/Airline.h
         code/Airport.cpp
         code/Airport.h
+        code/FlightGraph.cpp
+        code/FlightGraph.h
 
 )
