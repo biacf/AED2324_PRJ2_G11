@@ -1,6 +1,6 @@
 #include <iostream>
-#include <iostream>
 #include "DataReader.h"
+
 int main() {
     std::map<std::string, Airline> airlines;
     std::map<std::string, Airport> airports;
@@ -58,8 +58,22 @@ int main() {
                         std::cout<< "The total number of flights is "<< number_of_flights << std::endl;
                         break;
                     }
-
-
+                    case 'c':{
+                        std::string airport;
+                        std::cout << "Airport: ";
+                        std::cin >> airport;
+                        int outgoing_flights = flights.findVertex(airport)->getOutgoingF();
+                        std::cout << "The total number of outgoing flights from " << airport << " is " << outgoing_flights << std::endl;
+                        break;
+                    }
+                    case 'd':{
+                        std::string airport;
+                        std::cout << "Airport: ";
+                        std::cin >> airport;
+                        int outgoing_airlines = flights.findVertex(airport)->getOutgoingA();
+                        std::cout << "The total number of airlines with outgoing flights from " << airport << " is " << outgoing_airlines << std::endl;
+                        break;
+                    }
                 }
 
                 // do a switch OR create an exterior function to deal with it just to avoid crowding this function
