@@ -99,3 +99,20 @@ FlightGraph DataReader::populate_graph(std::map<std::string, Airport> airports, 
     file.close();
     return fgraph;
 }
+
+/**
+ * @brief Extracts number of lines from <i>flights.csv</i>
+ *
+ * @return int representing the number of flights
+ */
+int DataReader::number_of_flights() {
+    file.open(filename);
+    std::string line;
+    getline(file, line); // Ignore header
+    int res = 0;
+    while (getline(file, line)) {
+        res++;
+    }
+    file.close();
+    return res;
+}
