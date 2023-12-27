@@ -75,6 +75,34 @@ int main() {
                         std::cout << "The total number of airlines with outgoing flights from " << airport << " is " << outgoing_airlines << std::endl;
                         break;
                     }
+                    case 'g':{
+                        std::unordered_set<std::string> destinations;
+                        std::string airport_code;
+
+                        std::cout << "Airport Code: ";
+                        std::cin >> airport_code;
+
+                        while(airports.find(airport_code) == airports.end()){
+                            std::cout << "Airport doesn't exist" << std::endl;
+                            std::cin >> airport_code;
+                        }
+
+                        std::string airport_name = airports.find(airport_code)->second.getName();
+
+                        std::vector<FlightGraphE> out = flights.findVertex(airport_code)->getFlights();
+                        for(auto e : out){
+                            if(destinations.find(e.getDest()->getAirport().getCountry()) == destinations.end()){
+                                destinations.insert(e.getDest()->getAirport().getCountry());
+                            }
+                        }
+
+                        std::cout << "You can fly to " << destinations.size() << " countries from " << airport_name << " (" << airport_code << ")" << std::endl;
+                        for(auto d : destinations){
+                            std::cout << d << std::endl;
+                        }
+
+                        break;
+                    }
                     case 'h': {
                         std::unordered_set<std::string> destinations_of_city;
                         std::string city;

@@ -15,7 +15,8 @@
 					"source" : ".",
 					"targetIndexes" : 
 					[
-						0
+						0,
+						1
 					]
 				}
 			],
@@ -30,7 +31,8 @@
 					"name" : "AED2324_PRJ2_G11",
 					"targetIndexes" : 
 					[
-						0
+						0,
+						1
 					]
 				}
 			],
@@ -39,8 +41,15 @@
 				{
 					"directoryIndex" : 0,
 					"id" : "AED2324_PRJ2_G11::@6890427a1f51a3e7e1df",
-					"jsonFile" : "target-AED2324_PRJ2_G11-Debug-7bdd3db970602b559706.json",
+					"jsonFile" : "target-AED2324_PRJ2_G11-Debug-2bf46261b5030c37ccc3.json",
 					"name" : "AED2324_PRJ2_G11",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "Doxygen::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-Doxygen-Debug-3890c022b400da953b64.json",
+					"name" : "Doxygen",
 					"projectIndex" : 0
 				}
 			]
@@ -49,12 +58,12 @@
 	"kind" : "codemodel",
 	"paths" : 
 	{
-		"build" : "C:/Users/Pedro Vieira/Desktop/FEUP/AED2324_PRJ2_G11/cmake-build-debug",
-		"source" : "C:/Users/Pedro Vieira/Desktop/FEUP/AED2324_PRJ2_G11"
+		"build" : "C:/Users/AnaBeatrizCarneiroFe/Desktop/uni/2 ano/AED/AED2324_PRJ2_G11/cmake-build-debug",
+		"source" : "C:/Users/AnaBeatrizCarneiroFe/Desktop/uni/2 ano/AED/AED2324_PRJ2_G11"
 	},
 	"version" : 
 	{
 		"major" : 2,
-		"minor" : 6
+		"minor" : 5
 	}
 }
