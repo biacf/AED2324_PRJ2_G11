@@ -1,5 +1,6 @@
 #include <iostream>
 #include "DataReader.h"
+#include <unordered_set>
 
 int main() {
     std::map<std::string, Airline> airlines;
@@ -72,6 +73,40 @@ int main() {
                         std::cin >> airport;
                         int outgoing_airlines = flights.findVertex(airport)->getOutgoingA();
                         std::cout << "The total number of airlines with outgoing flights from " << airport << " is " << outgoing_airlines << std::endl;
+                        break;
+                    }
+                    case 'h': {
+                        std::unordered_set<std::string> destinations_of_city;
+                        std::string city;
+                        std::cout << "City: ";
+                        std::cin.ignore();
+                        std::getline(std::cin, city);
+                        std::cout<<std::endl;
+                        bool found = false;
+                        for (auto a: flights.getFlightVSet()) {
+                            a->setVisited(false);
+                        }
+
+                        for (auto a: flights.getFlightVSet()) {
+                            if(!a->isVisited()){
+                                if(a->getAirport().getCity() == city){
+                                    found = true;
+                                    for (FlightGraphE edge: a->getFlights()) {
+                                        destinations_of_city.insert(edge.getDest()->getAirport().getCountry());
+                                    }
+                                }
+                                a->setVisited(true);
+                            }
+                        }
+                        if (found) {
+                            std::cout << "From " << city << " you can reach: " << std::endl;
+                            for (const auto &a: destinations_of_city) {
+                                std::cout << a << std::endl;
+                            }
+                        }
+                        else{
+                            std::cout << "City: "<<city<<" not found" << std::endl;
+                        }
                         break;
                     }
                 }
