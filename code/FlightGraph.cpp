@@ -3,9 +3,11 @@
 //
 
 #include <algorithm>
+#include <queue>
+#include <map>
 #include "FlightGraph.h"
 
-bool FlightGraphE::operator==(const Airline &pns) const {
+bool FlightGraphE::operator==( Airline* pns) const {
     return airline == pns;
 }
 /**
@@ -34,8 +36,8 @@ FlightGraphV *FlightGraph::findVertex(const std::string &code) const {
  * @param airport : \b Airport we want to add to graph.
  * @return \b True if vertex was successfully added, \b false otherwise.
  */
-bool FlightGraph::addVertex(const Airport airport) {
-    if (findVertex(airport.getCode()) != NULL)
+bool FlightGraph::addVertex(Airport* airport) {
+    if (findVertex(airport->getCode()) != NULL)
         return false;
     flightvSet.push_back(new FlightGraphV(airport));
     return true;
@@ -75,7 +77,7 @@ bool FlightGraph::removeVertex(const std::string &code) {
  * @param airline : Airline responsible for connection.
  * @return \b True if trip (<i>edge</i>) was successfully added and \b false otherwise.
  */
-bool FlightGraph::addEdge(const std::string &sourc, const std::string &dest, Airline airline) {
+bool FlightGraph::addEdge(const std::string &sourc, const std::string &dest, Airline* airline) const {
     auto v1 = findVertex(sourc);
     auto v2 = findVertex(dest);
     if (v1 == NULL || v2 == NULL)
@@ -87,7 +89,7 @@ bool FlightGraph::addEdge(const std::string &sourc, const std::string &dest, Air
 /**
  * @brief Removes \b trip (<i>edge</i>) from graph.<BR><BR>
  *
- * <i>Remover</i> a \b trip from <b>source airport</b> to <b>destination airport</b>.<BR><BR>
+ * <i>Removes</i> a \b trip from <b>source airport</b> to <b>destination airport</b>.<BR><BR>
  * If either airport <i>doesn't exist</i>, \b false is returned.<BR>
  * If the operation is <i>successful</i>, it returns \b true.
  *
@@ -104,6 +106,36 @@ bool FlightGraph::removeEdge(const std::string &sourc, const std::string &dest) 
 }
 
 /**
+ * @brief Gets reachable destinations from X airport with Y layovers.<BR><BR>
+ *
+ * Auxiliary function to i. in Statistics.<BR><BR>
+ * Given an <b>airport code</b>, an <i>integer value</i> that represents the <b>expected layovers</b>, and unordered sets that collect the results, returns the reachable destinations from said airport that are a certain amount of layovers away.
+ *
+ * @param airport_code : Airport Code.
+ * @param layovers : Amount of layovers.
+ * @param airports : Reachable airports.
+ * @param countries : Reachable countries.
+ * @param cities : Reachable cities.
+ */
+void FlightGraph::getDestinations(std::string airport_code, int layovers, std::unordered_set<Airport*> &airports, std::unordered_set<std::string> &countries, std::unordered_set<std::string> &cities) {
+    std::vector<Airport*> solutions;
+    layovers++;
+    solutions = AirportsAtDistanceXLayovers(airport_code, layovers);
+
+    for(const auto& a : solutions){
+        airports.insert(a);
+
+        if(countries.find(a->getCountry()) == countries.end()){
+            countries.insert(a->getCountry());
+        }
+
+        if(cities.find(a->getCity()) == cities.end()){
+            cities.insert(a->getCity());
+        }
+    }
+}
+
+/**
  * @brief Adds outgoing \b trip (<i>edge</i>) to airport. <BR><BR>
  *
  * Adds an <b>outgoing trip</b> that connects the <b>source airport</b> and the <b>destination airport</b>, performed by a certain \b airline.
@@ -111,7 +143,7 @@ bool FlightGraph::removeEdge(const std::string &sourc, const std::string &dest) 
  * @param dest : Destination airport code.
  * @param airline : Airline that performs the connection.
  */
-void FlightGraphV::addEdge(FlightGraphV *dest, Airline airline) {
+void FlightGraphV::addEdge(FlightGraphV *dest, Airline* airline) {
     flights.push_back(FlightGraphE(dest, airline));
     if (std::find(flights_from_airline.begin(), flights_from_airline.end(), airline) == flights_from_airline.end()) {
         flights_from_airline.push_back(FlightGraphE(dest, airline));
@@ -141,16 +173,57 @@ bool FlightGraphV::removeEdgeTo(FlightGraphV *d) {
 /*!
   Builds a <b>Flight Graph Vertex</b> object from an \b airport object.
 */
-FlightGraphV::FlightGraphV(Airport airport) {
+FlightGraphV::FlightGraphV(Airport* airport) {
     this->airport = airport;
-    this->code = airport.getCode();
+    this->code = airport->getCode();
+    visited = false;
+    processing = false;
 }
 
 //! A \b constructor.
 /*!
   Builds a <b>Flight Graph Edge</b> (<i>Trip</i>) object from its <b>destination vertex</b> (<i>airport</i>) and <b>airline</b>.
 */
-FlightGraphE::FlightGraphE(FlightGraphV *dest, Airline airline) {
+FlightGraphE::FlightGraphE(FlightGraphV *dest, Airline* airline) {
     this->dest = dest;
     this->airline = airline;
+}
+
+std::vector<Airport*> FlightGraph::AirportsAtDistanceXLayovers(const std::string &source, int layovers) const {
+    std::vector<Airport*> res;
+    std::queue<FlightGraphV*> vers;
+    std::map<std::string, int> level;
+
+    for(auto ver: getFlightVSet()) {
+        ver->setVisited(false);
+    }
+
+    FlightGraphV *srcVertex = findVertex(source);
+    if(srcVertex != NULL) {
+        vers.push(srcVertex);
+        srcVertex->setVisited(true);
+        level[srcVertex->getCode()] = 0;
+
+        while (!vers.empty()) {
+            FlightGraphV* v = vers.front();
+            vers.pop();
+            int currentLevel = level[v->getCode()];
+
+            if(currentLevel == layovers) {
+                res.push_back(v->getAirport());
+            }
+
+            if(currentLevel < layovers) {
+                for(auto e : v->getFlights()) {
+                    FlightGraphV* adjV = e.getDest();
+                    if (!adjV->isVisited()) {
+                        vers.push(adjV);
+                        adjV->setVisited(true);
+                        level[adjV->getCode()] = currentLevel + 1;
+                    }
+                }
+            }
+        }
+    }
+    return res;
 }

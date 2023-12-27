@@ -3,8 +3,8 @@
 #include <unordered_set>
 
 int main() {
-    std::map<std::string, Airline> airlines;
-    std::map<std::string, Airport> airports;
+    std::map<std::string, Airline*> airlines;
+    std::map<std::string, Airport*> airports;
     FlightGraph flights;
     int number_of_flights;
 
@@ -87,17 +87,17 @@ int main() {
                             std::cin >> airport_code;
                         }
 
-                        std::string airport_name = airports.find(airport_code)->second.getName();
+                        std::string airport_name = airports.find(airport_code)->second->getName();
 
                         std::vector<FlightGraphE> out = flights.findVertex(airport_code)->getFlights();
                         for(auto e : out){
-                            if(destinations.find(e.getDest()->getAirport().getCountry()) == destinations.end()){
-                                destinations.insert(e.getDest()->getAirport().getCountry());
+                            if(destinations.find(e.getDest()->getAirport()->getCountry()) == destinations.end()){
+                                destinations.insert(e.getDest()->getAirport()->getCountry());
                             }
                         }
 
                         std::cout << "You can fly to " << destinations.size() << " countries from " << airport_name << " (" << airport_code << ")" << std::endl;
-                        for(auto d : destinations){
+                        for(const auto& d : destinations){
                             std::cout << d << std::endl;
                         }
 
@@ -117,10 +117,10 @@ int main() {
 
                         for (auto a: flights.getFlightVSet()) {
                             if(!a->isVisited()){
-                                if(a->getAirport().getCity() == city){
+                                if(a->getAirport()->getCity() == city){
                                     found = true;
                                     for (FlightGraphE edge: a->getFlights()) {
-                                        destinations_of_city.insert(edge.getDest()->getAirport().getCountry());
+                                        destinations_of_city.insert(edge.getDest()->getAirport()->getCountry());
                                     }
                                 }
                                 a->setVisited(true);
@@ -135,6 +135,43 @@ int main() {
                         else{
                             std::cout << "City: "<<city<<" not found" << std::endl;
                         }
+                        break;
+                    }
+                    case 'i':{
+                        //unordered sets for answer
+                        std::unordered_set<Airport*> reachable_airports;
+                        std::unordered_set<std::string> reachable_cities;
+                        std::unordered_set<std::string> reachable_countries;
+
+                        //airport code
+                        std::string airport_code;
+                        std::cout << "Airport code: ";
+                        std::cin >> airport_code;
+
+                        while(airports.find(airport_code) == airports.end()){
+                            std::cout << "Airport doesn't exist" << std::endl;
+                            std::cin >> airport_code;
+                        }
+
+                        // layovers (min 0)
+                        int layovers;
+                        std::cout << "How many layovers (if any)?: ";
+                        std::cin >> layovers;
+
+                        while(layovers < 0){
+                            std::cin >> layovers;
+                        }
+
+                        flights.getDestinations(airport_code,layovers,reachable_airports,reachable_countries,reachable_cities);
+
+                        std::cout << "You can reach " << reachable_airports.size() << " airports, " << reachable_countries.size() << " countries and " << reachable_cities.size() << " cities from " << airports.find(airport_code)->second->getName() << " (" << airport_code << ")" << std::endl;
+
+                        std::cout << "\nAirport, City, Country\n" << std::endl;
+
+                        for(const auto& a : reachable_airports){
+                            std::cout << a->getName() << " (" << a->getCode() << ")" << ", " << a->getCity() << ", " << a->getCountry() << std::endl;
+                        }
+
                         break;
                     }
                 }

@@ -17,8 +17,8 @@ DataReader::DataReader(std::string path) {
  *
  * @return Map that associates a \b code to the <b>airline object</b> for easier lookup.
  */
-std::map<std::string, Airline> DataReader::populate_airlines() {
-    std::map<std::string,Airline> airlines;
+std::map<std::string, Airline*> DataReader::populate_airlines() {
+    std::map<std::string,Airline*> airlines;
     file.open(filename);
     std::string line;
     getline(file, line); // Ignore header
@@ -32,7 +32,7 @@ std::map<std::string, Airline> DataReader::populate_airlines() {
         getline(iss, callsign, ',');
         getline(iss, country, ',');
 
-        airlines.insert({code, Airline(code,name,callsign,country)});
+        airlines.insert({code, new Airline(code,name,callsign,country)});
     }
 
     file.close();
@@ -44,8 +44,8 @@ std::map<std::string, Airline> DataReader::populate_airlines() {
  *
  * @return Map that associates a \b code to the <b>airport object</b> for easier lookup.
  */
-std::map<std::string, Airport> DataReader::populate_airports() {
-    std::map<std::string,Airport> airports;
+std::map<std::string, Airport*> DataReader::populate_airports() {
+    std::map<std::string,Airport*> airports;
     file.open(filename);
     std::string line;
     getline(file, line); // Ignore header
@@ -61,7 +61,7 @@ std::map<std::string, Airport> DataReader::populate_airports() {
         getline(iss, latitude, ',');
         getline(iss, longitude, ',');
 
-        airports.insert({code, Airport(code,name,city,country,stof(latitude),stof(longitude))});
+        airports.insert({code, new Airport(code,name,city,country,stof(latitude),stof(longitude))});
     }
 
     file.close();
@@ -75,7 +75,7 @@ std::map<std::string, Airport> DataReader::populate_airports() {
  * @param airlines : Map of airlines
  * @return Graph that correctly represents <b>flight routes</b> between airports.
  */
-FlightGraph DataReader::populate_graph(std::map<std::string, Airport> airports, std::map<std::string, Airline> airlines) {
+FlightGraph DataReader::populate_graph(std::map<std::string, Airport*> airports, std::map<std::string, Airline*> airlines) {
     FlightGraph fgraph;
     file.open(filename);
     std::string line;
