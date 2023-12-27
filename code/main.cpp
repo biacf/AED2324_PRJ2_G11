@@ -164,14 +164,13 @@ int main() {
 
                         flights.getDestinations(airport_code,layovers,reachable_airports,reachable_countries,reachable_cities);
 
-                        std::cout << "You can reach " << reachable_airports.size() << " airports, " << reachable_countries.size() << " countries and " << reachable_cities.size() << " cities from " << airports.find(airport_code)->second->getName() << " (" << airport_code << ")" << std::endl;
-
                         std::cout << "\nAirport, City, Country\n" << std::endl;
 
                         for(const auto& a : reachable_airports){
                             std::cout << a->getName() << " (" << a->getCode() << ")" << ", " << a->getCity() << ", " << a->getCountry() << std::endl;
                         }
 
+                        std::cout << "You can reach " << reachable_airports.size() << " airports, " << reachable_countries.size() << " countries and " << reachable_cities.size() << " cities from " << airports.find(airport_code)->second->getName() << " (" << airport_code << ")" << std::endl;
                         break;
                     }
                 }
