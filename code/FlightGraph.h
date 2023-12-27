@@ -18,6 +18,7 @@ private:
     std::string code; /*!< Airport code for lookup purposes*/
     Airport airport; /*!< Airport object associated with vertex */
     std::vector<FlightGraphE> flights; /*!< Vector of flights outgoing from airport */
+    std::vector<FlightGraphE> flights_from_airline; /*!< Vector of airlines responsible for outgoing flights */
     bool visited; /*!< For traversal purposes */
     bool processing; /*!< For traversal purposes */
 
@@ -32,7 +33,8 @@ public:
     std::vector<FlightGraphE> getFlights(){return flights;} /*! A getter method @return Vector of outgoing flights */
     std::string getCode(){return code;} /*! A getter method @return Airport code for lookup purposes */
     Airport getAirport(){return airport;} /*! A getter method @return Airport associated with vertex */
-    int getOutgoing(){return flights.size();} /*! A getter method @return Number of outgoing flights from airport */
+    int getOutgoingF(){return flights.size();} /*! A getter method @return Number of outgoing flights from airport */
+    int getOutgoingA(){return flights_from_airline.size();} /*! A getter method @return Number of airlines responsible for outgoing flights */
 };
 
 class FlightGraphE{
@@ -43,6 +45,8 @@ public:
     FlightGraphE(FlightGraphV* dest, Airline airline);
     FlightGraphV* getDest(){return dest;} /*! A getter method @return Flight destination */
     Airline getAirline(){return airline;} /*! A getter method @return Airline */
+
+    bool operator==(const Airline &pns) const;
 };
 
 class FlightGraph {

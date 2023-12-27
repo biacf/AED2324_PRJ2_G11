@@ -13,3 +13,7 @@ Airline::Airline(std::string code,std::string name,std::string callsign, std::st
     this->callsign = callsign;
     this->country = country;
 }
+
+bool Airline::operator==(const Airline &pns) const {
+    return code == pns.code;
+}

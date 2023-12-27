@@ -25,6 +25,8 @@ public:
     std::string getCallsign(){return callsign;}
     /*! A getter method @return Airline country */
     std::string getCountry(){return country;}
+
+    bool operator==(const Airline &pns) const;
 };
 
 

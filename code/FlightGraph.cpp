@@ -2,7 +2,12 @@
 // Created by AnaBeatrizCarneiroFe on 20/12/2023.
 //
 
+#include <algorithm>
 #include "FlightGraph.h"
+
+bool FlightGraphE::operator==(const Airline &pns) const {
+    return airline == pns;
+}
 /**
  * @brief Checks if a \b vertex exists.<BR><BR>
  *
@@ -108,6 +113,9 @@ bool FlightGraph::removeEdge(const std::string &sourc, const std::string &dest) 
  */
 void FlightGraphV::addEdge(FlightGraphV *dest, Airline airline) {
     flights.push_back(FlightGraphE(dest, airline));
+    if (std::find(flights_from_airline.begin(), flights_from_airline.end(), airline) == flights_from_airline.end()) {
+        flights_from_airline.push_back(FlightGraphE(dest, airline));
+    }
 }
 
 /**

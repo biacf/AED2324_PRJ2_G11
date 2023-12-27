@@ -1,10 +1,12 @@
 #include <iostream>
-#include <iostream>
 #include "DataReader.h"
+#include <unordered_set>
+
 int main() {
     std::map<std::string, Airline> airlines;
     std::map<std::string, Airport> airports;
     FlightGraph flights;
+    int number_of_flights;
 
     //distribute data
     DataReader airline_info("../code/dataset/airlines.csv");
@@ -13,6 +15,7 @@ int main() {
     airports = airport_info.populate_airports();
     DataReader flight_info("../code/dataset/flights.csv");
     flights = flight_info.populate_graph(airports,airlines);
+    number_of_flights = flight_info.number_of_flights();
 
     std::cout << "Welcome to the L.EIC2324 Flight Management Guide!" << std::endl;
     std::cout << "How can we help you?" << std::endl;
@@ -26,7 +29,8 @@ int main() {
             std::cin >> op;
         }
         switch(op){
-            case '1':
+
+            case '1': {
                 std::cout << "a. Total Airports" << std::endl; // easy... airports.size()
                 std::cout << "b. Total Flights" << std::endl; //easy from the graph but not efficient probably... maybe do a line count for the flights.csv
                 std::cout << "c. Outgoing Flights From X Airport" << std::endl; // easy
@@ -39,16 +43,80 @@ int main() {
                 std::cout << "j. Longest Trip(s)" << std::endl; // can be done with dfs i'm pretty sure
                 std::cout << "k. Essential Airports" << std:: endl; //get articulation points
 
-                std::cin >> op;
+                char statistical_op;
+                std::cin >> statistical_op;
 
-                while((op < 'a' || op > 'k') || !isalpha(op)){
-                    std::cin >> op;
+                while ((statistical_op < 'a' || statistical_op > 'k') || !isalpha(statistical_op)) {
+                    std::cin >> statistical_op;
                 }
+
+                switch (statistical_op) {
+                    case 'a':{
+                        std::cout<< "The total number of airports is "<< airports.size() << std::endl;
+                        break;
+                    }
+                    case 'b':{
+                        std::cout<< "The total number of flights is "<< number_of_flights << std::endl;
+                        break;
+                    }
+                    case 'c':{
+                        std::string airport;
+                        std::cout << "Airport: ";
+                        std::cin >> airport;
+                        int outgoing_flights = flights.findVertex(airport)->getOutgoingF();
+                        std::cout << "The total number of outgoing flights from " << airport << " is " << outgoing_flights << std::endl;
+                        break;
+                    }
+                    case 'd':{
+                        std::string airport;
+                        std::cout << "Airport: ";
+                        std::cin >> airport;
+                        int outgoing_airlines = flights.findVertex(airport)->getOutgoingA();
+                        std::cout << "The total number of airlines with outgoing flights from " << airport << " is " << outgoing_airlines << std::endl;
+                        break;
+                    }
+                    case 'h': {
+                        std::unordered_set<std::string> destinations_of_city;
+                        std::string city;
+                        std::cout << "City: ";
+                        std::cin.ignore();
+                        std::getline(std::cin, city);
+                        std::cout<<std::endl;
+                        bool found = false;
+                        for (auto a: flights.getFlightVSet()) {
+                            a->setVisited(false);
+                        }
+
+                        for (auto a: flights.getFlightVSet()) {
+                            if(!a->isVisited()){
+                                if(a->getAirport().getCity() == city){
+                                    found = true;
+                                    for (FlightGraphE edge: a->getFlights()) {
+                                        destinations_of_city.insert(edge.getDest()->getAirport().getCountry());
+                                    }
+                                }
+                                a->setVisited(true);
+                            }
+                        }
+                        if (found) {
+                            std::cout << "From " << city << " you can reach: " << std::endl;
+                            for (const auto &a: destinations_of_city) {
+                                std::cout << a << std::endl;
+                            }
+                        }
+                        else{
+                            std::cout << "City: "<<city<<" not found" << std::endl;
+                        }
+                        break;
+                    }
+                }
+
                 // do a switch OR create an exterior function to deal with it just to avoid crowding this function
                 // when prompting for input CHECK IF THE INPUT IS VALID... ex: if it's an airport, look it up in the map...
                 // maybe create functions for some prompts in the FlightGraph class
                 break;
-            case '2':
+            }
+            case '2': {
                 std::string source, destination;
                 std::cout << "Source: ";
                 std::cin >> source;
@@ -58,8 +126,10 @@ int main() {
                 //check if valid
                 // idk if to prompt user for input style or try to figure it out from input
                 break;
-            case '3':
+            }
+            case '3': {
                 return 0;
+            }
         }
 
         std::cout << "Anything else?" << std::endl;
