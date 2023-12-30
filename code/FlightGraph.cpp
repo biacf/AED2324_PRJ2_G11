@@ -276,7 +276,7 @@ void FlightGraph::dfsArt(FlightGraphV* v, FlightGraphV* parent, std::set<Airport
 void FlightGraph::findBestFlight(std::vector<Airport *> sources, std::vector<Airport *> destinations) {
     std::unordered_map<FlightGraphV*, int> layovers; //tracks number of layovers
     std::unordered_map<FlightGraphV*, FlightGraphV*> predecessor;
-    std::unordered_map<FlightGraphV*, int> minLayoversToDest;
+    int minLayoversToDest = INT_MAX;
     std::queue<FlightGraphV*> queue;
     std::set<FlightGraphV*> destinationVertices; //set of destination vertices for quick lookup
 
@@ -294,15 +294,14 @@ void FlightGraph::findBestFlight(std::vector<Airport *> sources, std::vector<Air
 
 
     //BFS
-    for (auto& source : sources) {
+    for (auto source : sources) {
         FlightGraphV* sourceVertex = findVertex(source->getCode());
         layovers[sourceVertex] = 0;
         queue.push(sourceVertex);
     }
-    for (auto& destination : destinations) {
+    for (auto destination : destinations) {
         FlightGraphV* destVertex = findVertex(destination->getCode());
         destinationVertices.insert(destVertex);
-        minLayoversToDest[destVertex] = INT_MAX;
     }
 
     while (!queue.empty()) {
@@ -317,16 +316,16 @@ void FlightGraph::findBestFlight(std::vector<Airport *> sources, std::vector<Air
                 queue.push(next);
 
                 if (destinationVertices.find(next) != destinationVertices.end()) {
-                    if (layovers[next] < minLayoversToDest[next]) {
-                        minLayoversToDest[next] = layovers[next];
+                    if (layovers[next] < minLayoversToDest) {
+                        minLayoversToDest = layovers[next];
                     }
                 }
             }
         }
     }
 
-    for (auto& dest : destinationVertices) {
-        if (layovers[dest] == minLayoversToDest[dest]) {
+    for (auto dest : destinationVertices) {
+        if (layovers[dest] == minLayoversToDest) {
             printPath(dest, predecessor);
         }
     }

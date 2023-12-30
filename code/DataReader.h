@@ -18,9 +18,9 @@ private:
     std::ifstream file; /*!< ifstream object */
 public:
     explicit DataReader(std::string path);
-    std::map<std::string, Airline*> populate_airlines();
-    std::map<std::string, Airport*> populate_airports();
-    FlightGraph populate_graph(std::map<std::string, Airport*> airports, std::map<std::string, Airline*> airlines);
+    std::unordered_map<std::string, Airline*> populate_airlines();
+    std::unordered_map<std::string, Airport*> populate_airports(std::unordered_map<std::string, std::vector<Airport *>>& cities);
+    FlightGraph populate_graph(std::unordered_map<std::string, Airport*> airports, std::unordered_map<std::string, Airline*> airlines);
     int number_of_flights();
 };
 

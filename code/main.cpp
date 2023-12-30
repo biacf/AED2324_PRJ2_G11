@@ -42,32 +42,13 @@ float haversineDistance(float lat1, float lon1, float lat2, float lon2) {
 }
 
 /**
- * @brief Find airports given a city.
- *
- * @param city : City name.
- * @param airports : Map code <-> airport.
- * @return Vector of airports.
- */
-std::vector<Airport*> findAirportsByCity(std::string city, std::map<std::string, Airport *> airports){
-    std::vector<Airport*> res;
-
-    for (auto a : airports){
-        if(a.second->getCity() == city){
-            res.push_back(a.second);
-        }
-    }
-
-    return res;
-}
-
-/**
  * @brief Find airports in 100km radius of coordinates.
  * @param lat : Location latitude.
  * @param lon : Location longitude.
  * @param airports : Map code <-> airport.
  * @return Vector of airports.
  */
-std::vector<Airport*> findAirportsByCoords(float lat, float lon, std::map<std::string, Airport *> airports) {
+std::vector<Airport*> findAirportsByCoords(float lat, float lon, std::unordered_map<std::string, Airport *> airports) {
     std::vector<Airport *> res;
     float dist;
     for(auto a : airports){
@@ -82,8 +63,9 @@ std::vector<Airport*> findAirportsByCoords(float lat, float lon, std::map<std::s
 
 
 int main() {
-    std::map<std::string, Airline *> airlines;
-    std::map<std::string, Airport *> airports;
+    std::unordered_map<std::string, Airline *> airlines;
+    std::unordered_map<std::string, Airport *> airports;
+    std::unordered_map<std::string, std::vector<Airport *>> cities;
     FlightGraph flights;
     int number_of_flights;
 
@@ -91,7 +73,7 @@ int main() {
     DataReader airline_info("../code/dataset/airlines.csv");
     airlines = airline_info.populate_airlines();
     DataReader airport_info("../code/dataset/airports.csv");
-    airports = airport_info.populate_airports();
+    airports = airport_info.populate_airports(cities);
     DataReader flight_info("../code/dataset/flights.csv");
     flights = flight_info.populate_graph(airports, airlines);
     number_of_flights = flight_info.number_of_flights();
@@ -248,8 +230,7 @@ int main() {
                             std::cin >> layovers;
                         }
 
-                        flights.getDestinations(airport_code, layovers, reachable_airports, reachable_countries,
-                                                reachable_cities);
+                        flights.getDestinations(airport_code, layovers, reachable_airports, reachable_countries,reachable_cities);
 
                         std::cout << "\nAirport, City, Country\n" << std::endl;
 
@@ -403,7 +384,7 @@ int main() {
 
                 std::string input;
                 float lat, lon;
-                int option;
+                char option;
 
                 std::vector<Airport*> sources;
                 std::vector<Airport*> destinations;
@@ -415,13 +396,13 @@ int main() {
                 std::cout << "4. Coordinates"  << std::endl;
                 std::cout << "Input Style: ";
                 std::cin >> option;
-                while(option < 1 || option > 4){
-                    std::cout << "Enter valid style: ";
+                while(option < '1' || option > '4'){
+                    std::cout << "Enter valid style: " << std::endl;
                     std::cin >> option;
                 }
 
                 switch(option) {
-                    case 1:
+                    case '1':
                         std::cout << "Source code: ";
                         std::cin >> input;
                         while(airports.find(input) == airports.end()){
@@ -431,7 +412,7 @@ int main() {
 
                         sources.push_back(airports.find(input)->second);
                         break;
-                    case 2:
+                    case '2':
                         std::cout << "Source airport name: ";
                         std::cin.ignore();
                         std::getline(std::cin, input);
@@ -441,13 +422,13 @@ int main() {
                             }
                         }
                         break;
-                    case 3:
+                    case '3':
                         std::cout << "Source city: ";
                         std::cin.ignore();
                         std::getline(std::cin, input);
-                        sources = findAirportsByCity(input, airports);
+                        sources = cities[input];
                         break;
-                    case 4:
+                    case '4':
                         std::cout << "Source latitude: ";
                         std::cin >> lat;
                         std::cout << "Source longitude: ";
@@ -465,14 +446,14 @@ int main() {
                 std::cout << "4. Coordinates"  << std::endl;
                 std::cout << "Input Style: ";
                 std::cin >> option;
-                while(option < 1 || option > 4){
+                while(option < '1' || option > '4'){
                     std::cout << "Enter valid style: ";
                     std::cin >> option;
                 }
 
 
                 switch(option) {
-                    case 1:
+                    case '1':
                         std::cout << "Destination code: ";
                         std::cin >> input;
                         while(airports.find(input) == airports.end()){
@@ -481,7 +462,7 @@ int main() {
                         }
                         destinations.push_back(airports.find(input)->second);
                         break;
-                    case 2:
+                    case '2':
                         std::cout << "Destination airport name: ";
                         std::cin.ignore();
                         std::getline(std::cin, input);
@@ -491,13 +472,13 @@ int main() {
                             }
                         }
                         break;
-                    case 3:
+                    case '3':
                         std::cout << "Destination city: ";
                         std::cin.ignore();
                         std::getline(std::cin, input);
-                        destinations = findAirportsByCity(input, airports);
+                        destinations = cities[input];
                         break;
-                    case 4:
+                    case '4':
                         std::cout << "Destination latitude: ";
                         std::cin >> lat;
                         std::cout << "Destination longitude: ";
