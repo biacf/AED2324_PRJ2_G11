@@ -7,6 +7,7 @@
 
 #include <vector>
 #include <unordered_set>
+#include <unordered_map>
 #include <set>
 #include "Airport.h"
 #include "Airline.h"
@@ -59,7 +60,7 @@ public:
 class FlightGraph {
 private:
     std::vector<FlightGraphV*> flightvSet; /*!< Vector of airports */
-    int index; /*< Field to help find articulation points */
+    int index; /*!< Field to help find articulation points */
 public:
     FlightGraph()= default; /*! Default constructor */
     FlightGraphV *findVertex(const std::string &code) const;
@@ -74,6 +75,9 @@ public:
     void getDestinations(std::string airport_code, int layovers, std::unordered_set<Airport*> &airports, std::unordered_set<std::string> &countries, std::unordered_set<std::string> &cities);
     std::vector<Airport *> AirportsAtDistanceXLayovers(const std::string &source, int layovers) const;
     void dfsArt(FlightGraphV *v, FlightGraphV *parent, std::set<Airport*> &articulationPoints);
+    void findBestFlight(std::vector<Airport*> sources, std::vector<Airport*> destinations);
+
+    void printPath(FlightGraphV *destination, std::unordered_map<FlightGraphV *, FlightGraphV *> &predecessor);
 };
 
 

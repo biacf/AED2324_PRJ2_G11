@@ -3,6 +3,83 @@
 #include <unordered_set>
 #include <set>
 #include <queue>
+#include <cmath>
+
+
+/**
+ * @brief Degrees to Radians <BR><BR>
+ *
+ * Method transforms a degree value into radians to calculate distances between coordinates.
+ *
+ * @param deg : Degree value.
+ * @return Radians value.
+ */
+float deg2rad(float deg) {
+    return deg * M_PI / 180.0;
+}
+
+/**
+ * @brief Method that calculates distance between two coordinates.<BR><BR>
+ *
+ * Method that takes two coordinates and calculates the distance between them using the Harversine Distance Formula.
+ *
+ * @param lat1 : Latitude of coordinate 1.
+ * @param lon1 : Longitude of coordinate 1.
+ * @param lat2 : Latitude of coordinate 2.
+ * @param lon2 : Longitude of coordinate 2.
+ * @return Distance between coordinate 1 and coordinate 2.
+ */
+float haversineDistance(float lat1, float lon1, float lat2, float lon2) {
+    float dLat = deg2rad(lat2 - lat1);
+    float dLon = deg2rad(lon2 - lon1);
+    lat1 = deg2rad(lat1);
+    lat2 = deg2rad(lat2);
+
+    float a = sin(dLat / 2) * sin(dLat / 2) +
+              sin(dLon / 2) * sin(dLon / 2) * cos(lat1) * cos(lat2);
+    float c = 2 * atan2(sqrt(a), sqrt(1 - a));
+    return 6371.0 * c;
+}
+
+/**
+ * @brief Find airports given a city.
+ *
+ * @param city : City name.
+ * @param airports : Map code <-> airport.
+ * @return Vector of airports.
+ */
+std::vector<Airport*> findAirportsByCity(std::string city, std::map<std::string, Airport *> airports){
+    std::vector<Airport*> res;
+
+    for (auto a : airports){
+        if(a.second->getCity() == city){
+            res.push_back(a.second);
+        }
+    }
+
+    return res;
+}
+
+/**
+ * @brief Find airports in 100km radius of coordinates.
+ * @param lat : Location latitude.
+ * @param lon : Location longitude.
+ * @param airports : Map code <-> airport.
+ * @return Vector of airports.
+ */
+std::vector<Airport*> findAirportsByCoords(float lat, float lon, std::map<std::string, Airport *> airports) {
+    std::vector<Airport *> res;
+    float dist;
+    for(auto a : airports){
+        dist = haversineDistance(lat, lon, a.second->getLatitude(), a.second->getLongitude());
+        if(dist <= 100){
+            res.push_back(a.second);
+        }
+    }
+
+    return res;
+}
+
 
 int main() {
     std::map<std::string, Airline *> airlines;
@@ -261,6 +338,9 @@ int main() {
 
                         std::cout << "In total there are " << essential.size() << " essential airports" << std::endl;
                     }
+                    default:{
+                        break;
+                    }
                 }
 
 
@@ -319,21 +399,130 @@ int main() {
                 break;
             }
             case '2': {
-                std::string source, destination;
-                std::cout << "Source: ";
-                std::cin >> source;
-                std::cout << "Destination: ";
-                std::cin >> destination;
+                std::cout << "Welcome to Best Flight Finder!\n" << std::endl;
 
-                //check if valid
-                // idk if to prompt user for input style or try to figure it out from input
+                std::string input;
+                float lat, lon;
+                int option;
+
+                std::vector<Airport*> sources;
+                std::vector<Airport*> destinations;
+
+                std::cout << "Source is: " << std::endl;
+                std::cout << "1. Airport Code" << std::endl;
+                std::cout << "2. Airport Name" << std::endl;
+                std::cout << "3. City" << std::endl;
+                std::cout << "4. Coordinates"  << std::endl;
+                std::cout << "Input Style: ";
+                std::cin >> option;
+                while(option < 1 || option > 4){
+                    std::cout << "Enter valid style: ";
+                    std::cin >> option;
+                }
+
+                switch(option) {
+                    case 1:
+                        std::cout << "Source code: ";
+                        std::cin >> input;
+                        while(airports.find(input) == airports.end()){
+                            std::cout << "Enter valid code: " << std::endl;
+                            std::cin >> input;
+                        }
+
+                        sources.push_back(airports.find(input)->second);
+                        break;
+                    case 2:
+                        std::cout << "Source airport name: ";
+                        std::cin.ignore();
+                        std::getline(std::cin, input);
+                        for(auto a : airports){
+                            if(a.second->getName() == input){
+                                sources.push_back(a.second);
+                            }
+                        }
+                        break;
+                    case 3:
+                        std::cout << "Source city: ";
+                        std::cin.ignore();
+                        std::getline(std::cin, input);
+                        sources = findAirportsByCity(input, airports);
+                        break;
+                    case 4:
+                        std::cout << "Source latitude: ";
+                        std::cin >> lat;
+                        std::cout << "Source longitude: ";
+                        std::cin >> lon;
+                        sources = findAirportsByCoords(lat, lon, airports);
+                        break;
+                    default:
+                        break;
+                }
+
+                std::cout << "Destination is: " << std::endl;
+                std::cout << "1. Airport Code" << std::endl;
+                std::cout << "2. Airport Name" << std::endl;
+                std::cout << "3. City" << std::endl;
+                std::cout << "4. Coordinates"  << std::endl;
+                std::cout << "Input Style: ";
+                std::cin >> option;
+                while(option < 1 || option > 4){
+                    std::cout << "Enter valid style: ";
+                    std::cin >> option;
+                }
+
+
+                switch(option) {
+                    case 1:
+                        std::cout << "Destination code: ";
+                        std::cin >> input;
+                        while(airports.find(input) == airports.end()){
+                            std::cout << "Enter valid code: " << std::endl;
+                            std::cin >> input;
+                        }
+                        destinations.push_back(airports.find(input)->second);
+                        break;
+                    case 2:
+                        std::cout << "Destination airport name: ";
+                        std::cin.ignore();
+                        std::getline(std::cin, input);
+                        for(auto a : airports){
+                            if(a.second->getName() == input){
+                                destinations.push_back(a.second);
+                            }
+                        }
+                        break;
+                    case 3:
+                        std::cout << "Destination city: ";
+                        std::cin.ignore();
+                        std::getline(std::cin, input);
+                        destinations = findAirportsByCity(input, airports);
+                        break;
+                    case 4:
+                        std::cout << "Destination latitude: ";
+                        std::cin >> lat;
+                        std::cout << "Destination longitude: ";
+                        std::cin >> lon;
+                        sources = findAirportsByCoords(lat, lon, airports);
+                        break;
+                    default:
+                        break;
+                }
+
+                flights.findBestFlight(sources, destinations);
+
                 break;
             }
             case '3': {
                 return 0;
+            }
+            default:{
+                break;
             }
         }
 
         std::cout << "Anything else?" << std::endl;
     }
 }
+
+
+

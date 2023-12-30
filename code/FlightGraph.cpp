@@ -5,6 +5,9 @@
 #include <algorithm>
 #include <queue>
 #include <map>
+#include <unordered_map>
+#include <stack>
+#include <iostream>
 #include "FlightGraph.h"
 
 bool FlightGraphE::operator==( Airline* pns) const {
@@ -229,7 +232,6 @@ std::vector<Airport*> FlightGraph::AirportsAtDistanceXLayovers(const std::string
 }
 
 /**
- *
  * @brief A method that identifies the graph's articulation points.<BR><BR>
  *
  * Using DFS, this method goes through the graph and identifies its <b>articulation points</b>.<BR><BR>
@@ -261,4 +263,99 @@ void FlightGraph::dfsArt(FlightGraphV* v, FlightGraphV* parent, std::set<Airport
             v->setLow(std::min(v->getLow(), w->getNum()));
         }
     }
+}
+
+/**
+ * @brief Finds best flight from one of sources to one of destinations.<BR><BR>
+ *
+ * Given a vector of <b>source airports</b> and a vector of <b>destination airports</b>, finds the <b>best flight</b> or \b flights between sources and destinations. This corresponds to the ones with the least amount of layovers.
+ *
+ * @param sources : Vector of source airports.
+ * @param destinations : Vector of destination airports.
+ */
+void FlightGraph::findBestFlight(std::vector<Airport *> sources, std::vector<Airport *> destinations) {
+    std::unordered_map<FlightGraphV*, int> layovers; //tracks number of layovers
+    std::unordered_map<FlightGraphV*, FlightGraphV*> predecessor;
+    std::unordered_map<FlightGraphV*, int> minLayoversToDest;
+    std::queue<FlightGraphV*> queue;
+    std::set<FlightGraphV*> destinationVertices; //set of destination vertices for quick lookup
+
+    //wrong input handling
+    if (sources.empty() && destinations.empty()){
+        std::cout << "Invalid Source and Destination." << std::endl;
+        return;
+    }
+    else if(sources.empty()){
+        std::cout << "Invalid Source." << std::endl;
+    }
+    else if(destinations.empty()){
+        std::cout << "Invalid Destination." << std::endl;
+    }
+
+
+    //BFS
+    for (auto& source : sources) {
+        FlightGraphV* sourceVertex = findVertex(source->getCode());
+        layovers[sourceVertex] = 0;
+        queue.push(sourceVertex);
+    }
+    for (auto& destination : destinations) {
+        FlightGraphV* destVertex = findVertex(destination->getCode());
+        destinationVertices.insert(destVertex);
+        minLayoversToDest[destVertex] = INT_MAX;
+    }
+
+    while (!queue.empty()) {
+        FlightGraphV* current = queue.front();
+        queue.pop();
+
+        for (auto edge : current->getFlights()) {
+            FlightGraphV* next = edge.getDest();
+            if (layovers.find(next) == layovers.end() || layovers[next] > layovers[current] + 1) {
+                layovers[next] = layovers[current] + 1;
+                predecessor[next] = current;
+                queue.push(next);
+
+                if (destinationVertices.find(next) != destinationVertices.end()) {
+                    if (layovers[next] < minLayoversToDest[next]) {
+                        minLayoversToDest[next] = layovers[next];
+                    }
+                }
+            }
+        }
+    }
+
+    for (auto& dest : destinationVertices) {
+        if (layovers[dest] == minLayoversToDest[dest]) {
+            printPath(dest, predecessor);
+        }
+    }
+}
+
+/**
+ * @brief Prints path from airport A to airport B.
+ *
+ * Helpful in displaying best flight options to user.
+ *
+ * @param destination : Destination vertex.
+ * @param predecessor : Map that associates an airport with its predecessor.
+ */
+void FlightGraph::printPath(FlightGraphV* destination, std::unordered_map<FlightGraphV*, FlightGraphV*>& predecessor) {
+    std::stack<FlightGraphV*> pathStack;
+    FlightGraphV* current = destination;
+    while (current != nullptr) {
+        pathStack.push(current);
+        current = predecessor[current];
+    }
+
+    // Print the path
+    while (!pathStack.empty()) {
+        FlightGraphV* vertex = pathStack.top();
+        pathStack.pop();
+        std::cout << vertex->getAirport()->getName() << " (" << vertex->getCode() << ")";
+        if (!pathStack.empty()) {
+            std::cout << " -> ";
+        }
+    }
+    std::cout << std::endl;
 }
