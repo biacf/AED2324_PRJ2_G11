@@ -235,6 +235,32 @@ int main() {
                         }
                         break;
                     }
+                    case 'k':{
+                        std::set<Airport*> essential;
+                        flights.setIndex(0);
+
+                        //set up for articulation point lookup
+                        for(auto v : flights.getFlightVSet()){
+                            v->setVisited(false);
+                            v->setNum(-1);
+                            v->setLow(-1);
+                        }
+
+                        for (auto v: flights.getFlightVSet()){
+                            if(!v->isVisited()){
+                                flights.dfsArt(v, nullptr, essential);
+                            }
+                        }
+
+                        //output
+                        std::cout << "The essential airports are:" << std::endl;
+
+                        for(auto a: essential){
+                            std::cout << a->getName() << " (" << a->getCode() << ") " << std::endl;
+                        }
+
+                        std::cout << "In total there are " << essential.size() << " essential airports" << std::endl;
+                    }
                 }
 
 

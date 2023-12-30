@@ -227,3 +227,38 @@ std::vector<Airport*> FlightGraph::AirportsAtDistanceXLayovers(const std::string
     }
     return res;
 }
+
+/**
+ *
+ * @brief A method that identifies the graph's articulation points.<BR><BR>
+ *
+ * Using DFS, this method goes through the graph and identifies its <b>articulation points</b>.<BR><BR>
+ * These points represent the \b airports that are essential to maintaining all air travel connected.
+ *
+ * @param v : Current vertex being explored.
+ * @param parent : Parent vertex.
+ * @param articulationPoints : Set of articulation points.
+ */
+void FlightGraph::dfsArt(FlightGraphV* v, FlightGraphV* parent, std::set<Airport*>& articulationPoints) {
+    v->setVisited(true);
+    v->setNum(index);
+    v->setLow(index);
+    index++;
+    int children = 0;
+
+    for (auto edge : v->getFlights()) {
+        FlightGraphV* w = edge.getDest();
+        if (!w->isVisited()) {
+            children++;
+            dfsArt(w, v, articulationPoints);
+            v->setLow(std::min(v->getLow(), w->getLow()));
+
+            if (parent == nullptr && children > 1)
+                articulationPoints.insert(v->getAirport());
+            if (parent != nullptr && w->getLow() >= v->getNum())
+                articulationPoints.insert(v->getAirport());
+        } else if (w != parent) {
+            v->setLow(std::min(v->getLow(), w->getNum()));
+        }
+    }
+}
