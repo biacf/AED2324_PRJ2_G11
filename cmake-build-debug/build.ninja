@@ -57,7 +57,7 @@ build cmake_object_order_depends_target_AED2324_PRJ2_G11: phony || CMakeFiles/AE
 
 build CMakeFiles/AED2324_PRJ2_G11.dir/code/main.cpp.obj: CXX_COMPILER__AED2324_PRJ2_G11_unscanned_Debug C$:/Users/AnaBeatrizCarneiroFe/Desktop/uni/2$ ano/AED/AED2324_PRJ2_G11/code/main.cpp || cmake_object_order_depends_target_AED2324_PRJ2_G11
   DEP_FILE = CMakeFiles\AED2324_PRJ2_G11.dir\code\main.cpp.obj.d
-  FLAGS = -g -std=gnu++11
+  FLAGS = -g -std=gnu++11 -fdiagnostics-color=always
   OBJECT_DIR = CMakeFiles\AED2324_PRJ2_G11.dir
   OBJECT_FILE_DIR = CMakeFiles\AED2324_PRJ2_G11.dir\code
   TARGET_COMPILE_PDB = CMakeFiles\AED2324_PRJ2_G11.dir\
@@ -65,7 +65,7 @@ build CMakeFiles/AED2324_PRJ2_G11.dir/code/main.cpp.obj: CXX_COMPILER__AED2324_P
 
 build CMakeFiles/AED2324_PRJ2_G11.dir/code/Graph.cpp.obj: CXX_COMPILER__AED2324_PRJ2_G11_unscanned_Debug C$:/Users/AnaBeatrizCarneiroFe/Desktop/uni/2$ ano/AED/AED2324_PRJ2_G11/code/Graph.cpp || cmake_object_order_depends_target_AED2324_PRJ2_G11
   DEP_FILE = CMakeFiles\AED2324_PRJ2_G11.dir\code\Graph.cpp.obj.d
-  FLAGS = -g -std=gnu++11
+  FLAGS = -g -std=gnu++11 -fdiagnostics-color=always
   OBJECT_DIR = CMakeFiles\AED2324_PRJ2_G11.dir
   OBJECT_FILE_DIR = CMakeFiles\AED2324_PRJ2_G11.dir\code
   TARGET_COMPILE_PDB = CMakeFiles\AED2324_PRJ2_G11.dir\
@@ -73,7 +73,7 @@ build CMakeFiles/AED2324_PRJ2_G11.dir/code/Graph.cpp.obj: CXX_COMPILER__AED2324_
 
 build CMakeFiles/AED2324_PRJ2_G11.dir/code/DataReader.cpp.obj: CXX_COMPILER__AED2324_PRJ2_G11_unscanned_Debug C$:/Users/AnaBeatrizCarneiroFe/Desktop/uni/2$ ano/AED/AED2324_PRJ2_G11/code/DataReader.cpp || cmake_object_order_depends_target_AED2324_PRJ2_G11
   DEP_FILE = CMakeFiles\AED2324_PRJ2_G11.dir\code\DataReader.cpp.obj.d
-  FLAGS = -g -std=gnu++11
+  FLAGS = -g -std=gnu++11 -fdiagnostics-color=always
   OBJECT_DIR = CMakeFiles\AED2324_PRJ2_G11.dir
   OBJECT_FILE_DIR = CMakeFiles\AED2324_PRJ2_G11.dir\code
   TARGET_COMPILE_PDB = CMakeFiles\AED2324_PRJ2_G11.dir\
@@ -81,7 +81,7 @@ build CMakeFiles/AED2324_PRJ2_G11.dir/code/DataReader.cpp.obj: CXX_COMPILER__AED
 
 build CMakeFiles/AED2324_PRJ2_G11.dir/code/Airline.cpp.obj: CXX_COMPILER__AED2324_PRJ2_G11_unscanned_Debug C$:/Users/AnaBeatrizCarneiroFe/Desktop/uni/2$ ano/AED/AED2324_PRJ2_G11/code/Airline.cpp || cmake_object_order_depends_target_AED2324_PRJ2_G11
   DEP_FILE = CMakeFiles\AED2324_PRJ2_G11.dir\code\Airline.cpp.obj.d
-  FLAGS = -g -std=gnu++11
+  FLAGS = -g -std=gnu++11 -fdiagnostics-color=always
   OBJECT_DIR = CMakeFiles\AED2324_PRJ2_G11.dir
   OBJECT_FILE_DIR = CMakeFiles\AED2324_PRJ2_G11.dir\code
   TARGET_COMPILE_PDB = CMakeFiles\AED2324_PRJ2_G11.dir\
@@ -89,7 +89,7 @@ build CMakeFiles/AED2324_PRJ2_G11.dir/code/Airline.cpp.obj: CXX_COMPILER__AED232
 
 build CMakeFiles/AED2324_PRJ2_G11.dir/code/Airport.cpp.obj: CXX_COMPILER__AED2324_PRJ2_G11_unscanned_Debug C$:/Users/AnaBeatrizCarneiroFe/Desktop/uni/2$ ano/AED/AED2324_PRJ2_G11/code/Airport.cpp || cmake_object_order_depends_target_AED2324_PRJ2_G11
   DEP_FILE = CMakeFiles\AED2324_PRJ2_G11.dir\code\Airport.cpp.obj.d
-  FLAGS = -g -std=gnu++11
+  FLAGS = -g -std=gnu++11 -fdiagnostics-color=always
   OBJECT_DIR = CMakeFiles\AED2324_PRJ2_G11.dir
   OBJECT_FILE_DIR = CMakeFiles\AED2324_PRJ2_G11.dir\code
   TARGET_COMPILE_PDB = CMakeFiles\AED2324_PRJ2_G11.dir\
@@ -97,7 +97,7 @@ build CMakeFiles/AED2324_PRJ2_G11.dir/code/Airport.cpp.obj: CXX_COMPILER__AED232
 
 build CMakeFiles/AED2324_PRJ2_G11.dir/code/FlightGraph.cpp.obj: CXX_COMPILER__AED2324_PRJ2_G11_unscanned_Debug C$:/Users/AnaBeatrizCarneiroFe/Desktop/uni/2$ ano/AED/AED2324_PRJ2_G11/code/FlightGraph.cpp || cmake_object_order_depends_target_AED2324_PRJ2_G11
   DEP_FILE = CMakeFiles\AED2324_PRJ2_G11.dir\code\FlightGraph.cpp.obj.d
-  FLAGS = -g -std=gnu++11
+  FLAGS = -g -std=gnu++11 -fdiagnostics-color=always
   OBJECT_DIR = CMakeFiles\AED2324_PRJ2_G11.dir
   OBJECT_FILE_DIR = CMakeFiles\AED2324_PRJ2_G11.dir\code
   TARGET_COMPILE_PDB = CMakeFiles\AED2324_PRJ2_G11.dir\
