@@ -13,6 +13,6 @@ C:\Users\AnaBeatrizCarneiroFe\AppData\Local\Programs\CLion\bin\cmake\win\x64\bin
 -- Detecting CXX compile features - done
 -- Found Doxygen: C:/Program Files/doxygen/bin/doxygen.exe (found version "1.9.8") found components: doxygen missing components: dot
 Doxygen build started
--- Configuring done (3.1s)
+-- Configuring done (3.3s)
 -- Generating done (0.0s)
 -- Build files have been written to: C:/Users/AnaBeatrizCarneiroFe/Desktop/uni/2 ano/AED/AED2324_PRJ2_G11/cmake-build-debug

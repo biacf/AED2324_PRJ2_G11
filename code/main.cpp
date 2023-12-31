@@ -61,11 +61,10 @@ std::vector<Airport*> findAirportsByCoords(float lat, float lon, std::unordered_
     return res;
 }
 
-
 int main() {
     std::unordered_map<std::string, Airline *> airlines;
     std::unordered_map<std::string, Airport *> airports;
-    std::unordered_map<std::string, std::vector<Airport *>> cities;
+    std::unordered_map<std::pair<std::string, std::string>, std::vector<Airport *>, pair_hash> cities;
     FlightGraph flights;
     int number_of_flights;
 
@@ -368,7 +367,7 @@ int main() {
             case '2': {
                 std::cout << "Welcome to Best Flight Finder!\n" << std::endl;
 
-                std::string input;
+                std::string input, city, country;
                 float lat, lon;
                 char option;
 
@@ -411,8 +410,11 @@ int main() {
                     case '3':
                         std::cout << "Source city: ";
                         std::cin.ignore();
-                        std::getline(std::cin, input);
-                        sources = cities[input];
+                        std::getline(std::cin, city);
+                        std::cout << "Source country: ";
+                        std::cin.ignore();
+                        std::getline(std::cin, country);
+                        sources = cities[{city, country}];
                         break;
                     case '4':
                         std::cout << "Source latitude: ";
@@ -461,8 +463,11 @@ int main() {
                     case '3':
                         std::cout << "Destination city: ";
                         std::cin.ignore();
-                        std::getline(std::cin, input);
-                        destinations = cities[input];
+                        std::getline(std::cin, city);
+                        std::cout << "Destination country: ";
+                        std::cin.ignore();
+                        std::getline(std::cin, country);
+                        destinations = cities[{city, country}];
                         break;
                     case '4':
                         std::cout << "Destination latitude: ";
