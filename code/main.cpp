@@ -169,11 +169,14 @@ int main() {
                     case 'h': {
                         std::unordered_set<std::string> destinations_of_city;
                         std::string city;
-                        std::cout << "City: ";
+                        std::string country;
                         std::cin.ignore();
+                        std::cout << "City:";
                         std::getline(std::cin, city);
+                        std::cout << "Coutry:";
+                        std::getline(std::cin, country);
                         std::cout << std::endl;
-                        for(auto a : cities[city]){
+                        for(auto a : cities[std::make_pair(city,country)]){
                             FlightGraphV* vertex = flights.findVertex(a->getCode());
                             for(auto c : vertex->getFlights()){
                                 FlightGraphV* dest = c.getDest();
@@ -181,12 +184,12 @@ int main() {
                             }
                         }
                         if (!destinations_of_city.empty()) {
-                            std::cout << "You can fly to " << destinations_of_city.size() << " countries from " << city <<": "<<std::endl;
+                            std::cout << "You can fly to " << destinations_of_city.size() << " countries from " << city <<", "<<country<<": "<<std::endl;
                             for (const auto &a: destinations_of_city) {
                                 std::cout << a << std::endl;
                             }
                         } else {
-                            std::cout << "City: " << city << " not found" << std::endl;
+                            std::cout << "City: " << city << " in " << country<< " not found " << std::endl;
                         }
                         break;
                     }
