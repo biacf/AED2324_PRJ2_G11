@@ -93,19 +93,14 @@ int main() {
 
             case '1': {
                 std::cout << "a. Total Airports" << std::endl; // easy... airports.size()
-                std::cout << "b. Total Flights"
-                          << std::endl; //easy from the graph but not efficient probably... maybe do a line count for the flights.csv
+                std::cout << "b. Total Flights" << std::endl; //easy from the graph but not efficient probably... maybe do a line count for the flights.csv
                 std::cout << "c. Outgoing Flights From X Airport" << std::endl; // easy
                 std::cout << "d. Airlines Flying From X Airport" << std::endl; // this is relatively easy
-                std::cout << "e. Outgoing Flights From X City"
-                          << std::endl; // again maybe create a City Class containing airports but idk how that would work
-                std::cout << "f. Total Flights From X Airline"
-                          << std::endl; //we probably need to create another graph OR another data structure to store this info ????
+                std::cout << "e. Outgoing Flights From X City" << std::endl; // again maybe create a City Class containing airports but idk how that would work
+                std::cout << "f. Total Flights From X Airline" << std::endl; //we probably need to create another graph OR another data structure to store this info ????
                 std::cout << "g. Reachable Countries From X Airport" << std::endl; // easy
-                std::cout << "h. Reachable Countries From X City"
-                          << std::endl; // maybe create a City Class.... still thinking about this
-                std::cout << "i. Total Destinations From X Airport"
-                          << std::endl; //prompts for layovers, can be done with bfs adaptation
+                std::cout << "h. Reachable Countries From X City" << std::endl; // maybe create a City Class.... still thinking about this
+                std::cout << "i. Total Destinations From X Airport" << std::endl; //prompts for layovers, can be done with bfs adaptation
                 std::cout << "j. Longest Trip(s)" << std::endl; // can be done with dfs i'm pretty sure
                 std::cout << "k. Essential Airports" << std::endl; //get articulation points
 
@@ -179,24 +174,15 @@ int main() {
                         std::cin.ignore();
                         std::getline(std::cin, city);
                         std::cout << std::endl;
-                        bool found = false;
-                        for (auto a: flights.getFlightVSet()) {
-                            a->setVisited(false);
-                        }
-
-                        for (auto a: flights.getFlightVSet()) {
-                            if (!a->isVisited()) {
-                                if (a->getAirport()->getCity() == city) {
-                                    found = true;
-                                    for (FlightGraphE edge: a->getFlights()) {
-                                        destinations_of_city.insert(edge.getDest()->getAirport()->getCountry());
-                                    }
-                                }
-                                a->setVisited(true);
+                        for(auto a : cities[city]){
+                            FlightGraphV* vertex = flights.findVertex(a->getCode());
+                            for(auto c : vertex->getFlights()){
+                                FlightGraphV* dest = c.getDest();
+                                destinations_of_city.emplace(dest->getAirport()->getCountry());
                             }
                         }
-                        if (found) {
-                            std::cout << "From " << city << " you can reach: " << std::endl;
+                        if (!destinations_of_city.empty()) {
+                            std::cout << "You can fly to " << destinations_of_city.size() << " countries from " << city <<": "<<std::endl;
                             for (const auto &a: destinations_of_city) {
                                 std::cout << a << std::endl;
                             }
