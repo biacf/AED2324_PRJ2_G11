@@ -26,8 +26,6 @@ else(DOXYGEN_FOUND)
 endif(DOXYGEN_FOUND)
 
 add_executable(AED2324_PRJ2_G11 code/main.cpp
-        code/Graph.cpp
-        code/Graph.h
         code/DataReader.cpp
         code/DataReader.h
         code/Airline.cpp

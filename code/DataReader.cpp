@@ -44,7 +44,7 @@ std::unordered_map<std::string, Airline*> DataReader::populate_airlines() {
  *
  * @return Map that associates a \b code to the <b>airport object</b> for easier lookup.
  */
-std::unordered_map<std::string, Airport*> DataReader::populate_airports(std::unordered_map<std::string, std::vector<Airport *>>& cities) {
+std::unordered_map<std::string, Airport*> DataReader::populate_airports(std::unordered_map<std::pair<std::string,std::string>, std::vector<Airport *>, pair_hash>& cities) {
     std::unordered_map<std::string,Airport*> airports;
     file.open(filename);
     std::string line;
@@ -63,7 +63,7 @@ std::unordered_map<std::string, Airport*> DataReader::populate_airports(std::uno
 
         auto* insertion = new Airport(code,name,city,country,stof(latitude),stof(longitude));
         airports.insert({code, insertion });
-        cities[city].push_back(insertion);
+        cities[{city,country}].push_back(insertion);
     }
 
     file.close();
