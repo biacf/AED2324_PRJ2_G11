@@ -151,6 +151,37 @@ int main() {
                                   << outgoing_airlines << std::endl;
                         break;
                     }
+                    case 'e': {
+                        std::string city;
+                        std::string country;
+                        std::cout << "City: ";
+                        std::cin >> city;
+                        std::cout << "Country: ";
+                        std::cin >> country;
+                        int outgoing_flights = 0;
+                        for (Airport* a : cities.find(std::make_pair(city, country))->second) {
+                            outgoing_flights += flights.findVertex(a->getCode())->getOutgoingF();
+                        }
+                        std::cout << "The total number of outgoing flights from " << city << ", " << country << " is "
+                                  << outgoing_flights << std::endl;
+                        break;
+                    }
+                    case 'f': {
+                        std::string airline;
+                        std::cout << "Airline: ";
+                        std::cin >> airline;
+                        int total_flights = 0;
+                        for (FlightGraphV* v : flights.getFlightVSet()) {
+                            for (FlightGraphE e : v->getFlights()) {
+                                if (e.getAirline()->getCode() == airline) {
+                                    total_flights++;
+                                }
+                            }
+                        }
+                        std::cout << "The total number of flights from " << airline << " is "
+                                  << total_flights << std::endl;
+                        break;
+                    }
                     case 'g': {
                         std::unordered_set<std::string> destinations;
                         std::string airport_code;
