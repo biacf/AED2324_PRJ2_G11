@@ -287,7 +287,7 @@ void FlightGraph::findBestFlight(std::vector<Airport *> sources, std::vector<Air
     std::unordered_map<FlightGraphV*, FlightGraphV*> predecessor;
     int minLayoversToDest = INT_MAX;
     std::queue<FlightGraphV*> queue;
-    std::set<FlightGraphV*> destinationVertices; //set of destination vertices for quick lookup
+    std::set<FlightGraphV*> destinationVertices;
 
     //wrong input handling
     if (sources.empty() && destinations.empty()){
