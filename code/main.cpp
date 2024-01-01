@@ -162,10 +162,12 @@ int main() {
                     case 'e': {
                         std::string city;
                         std::string country;
-                        std::cout << "City: ";
-                        std::cin >> city;
-                        std::cout << "Country: ";
-                        std::cin >> country;
+                        std::cin.ignore();
+                        std::cout << "City:";
+                        std::getline(std::cin, city);
+                        std::cout << "Coutry:";
+                        std::getline(std::cin, country);
+                        std::cout << std::endl;
                         while (cities.find(std::make_pair(city, country)) == cities.end()) {
                             std::cout << "City: ";
                             std::cin >> city;
