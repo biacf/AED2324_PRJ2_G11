@@ -137,6 +137,10 @@ int main() {
                         std::string airport;
                         std::cout << "Airport: ";
                         std::cin >> airport;
+                        while (airports.find(airport) == airports.end()) {
+                            std::cout << "Airport: ";
+                            std::cin >> airport;
+                        }
                         int outgoing_flights = flights.findVertex(airport)->getOutgoingF();
                         std::cout << "The total number of outgoing flights from " << airport << " is "
                                   << outgoing_flights << std::endl;
@@ -146,6 +150,10 @@ int main() {
                         std::string airport;
                         std::cout << "Airport: ";
                         std::cin >> airport;
+                        while (airports.find(airport) == airports.end()) {
+                            std::cout << "Airport: ";
+                            std::cin >> airport;
+                        }
                         int outgoing_airlines = flights.findVertex(airport)->getOutgoingA();
                         std::cout << "The total number of airlines with outgoing flights from " << airport << " is "
                                   << outgoing_airlines << std::endl;
@@ -158,6 +166,12 @@ int main() {
                         std::cin >> city;
                         std::cout << "Country: ";
                         std::cin >> country;
+                        while (cities.find(std::make_pair(city, country)) == cities.end()) {
+                            std::cout << "City: ";
+                            std::cin >> city;
+                            std::cout << "Country: ";
+                            std::cin >> country;
+                        }
                         int outgoing_flights = 0;
                         for (Airport* a : cities.find(std::make_pair(city, country))->second) {
                             outgoing_flights += flights.findVertex(a->getCode())->getOutgoingF();
@@ -170,6 +184,10 @@ int main() {
                         std::string airline;
                         std::cout << "Airline: ";
                         std::cin >> airline;
+                        while (airlines.find(airline) == airlines.end()) {
+                            std::cout << "Airline: ";
+                            std::cin >> airline;
+                        }
                         Airline* a = airlines.find(airline)->second;
                         std::cout << "The total number of flights from " << a->getCode()
                                   << " is " << a->getFlights() << std::endl;
