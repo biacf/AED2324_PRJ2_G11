@@ -97,6 +97,8 @@ FlightGraph DataReader::populate_graph(std::unordered_map<std::string, Airport*>
         airports.at(destination)->incrementIncoming();
         airports.at(source)->incrementOutgoing();
 
+        airlines.at(airline)->addFlight();
+
         fgraph.addEdge(source, destination,airlines.at(airline));
 
     }

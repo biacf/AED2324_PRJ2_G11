@@ -14,9 +14,11 @@ private:
     std::string name; /*!< Airline name */
     std::string callsign; /*!< Airline callsign */
     std::string country; /*!< Airline country */
+    int flights; /*!< Number of flights */
 public:
     Airline()= default; /*! Default constructor */
     Airline(std::string code, std::string name, std::string callsign, std::string country);
+    void addFlight(){flights++;} /*! A method that increments the number of flights */
     /*! A getter method @return Airline code */
     std::string getCode(){return code;}
     /*! A getter method @return Airline name */
@@ -25,6 +27,8 @@ public:
     std::string getCallsign(){return callsign;}
     /*! A getter method @return Airline country */
     std::string getCountry(){return country;}
+    /*! A getter method @return Number of flights */
+    int getFlights(){return flights;}
 
     bool operator==(const Airline &pns) const;
 };
