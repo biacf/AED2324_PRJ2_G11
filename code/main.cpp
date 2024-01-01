@@ -482,8 +482,8 @@ int main() {
                         sources.push_back(airports.find(input)->second);
                         break;
                     case '2':
-                        std::cout << "Source airport name: ";
                         std::cin.ignore();
+                        std::cout << "Source airport name: ";
                         std::getline(std::cin, input);
                         for(auto a : airports){
                             if(a.second->getName() == input){
@@ -496,9 +496,8 @@ int main() {
                         std::cin.ignore();
                         std::getline(std::cin, city);
                         std::cout << "Source country: ";
-                        std::cin.ignore();
                         std::getline(std::cin, country);
-                        sources = cities[{city, country}];
+                        sources = cities[std::make_pair(city, country)];
                         break;
                     case '4':
                         std::cout << "Source latitude: ";
@@ -535,8 +534,8 @@ int main() {
                         destinations.push_back(airports.find(input)->second);
                         break;
                     case '2':
-                        std::cout << "Destination airport name: ";
                         std::cin.ignore();
+                        std::cout << "Destination airport name: ";
                         std::getline(std::cin, input);
                         for(auto a : airports){
                             if(a.second->getName() == input){
@@ -545,13 +544,12 @@ int main() {
                         }
                         break;
                     case '3':
-                        std::cout << "Destination city: ";
                         std::cin.ignore();
+                        std::cout << "Destination city: ";
                         std::getline(std::cin, city);
                         std::cout << "Destination country: ";
-                        std::cin.ignore();
                         std::getline(std::cin, country);
-                        destinations = cities[{city, country}];
+                        destinations = cities[std::make_pair(city,country)];
                         break;
                     case '4':
                         std::cout << "Destination latitude: ";

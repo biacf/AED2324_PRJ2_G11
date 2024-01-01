@@ -4,7 +4,7 @@
 
 #include "Airport.h"
 
-//! A constructor.
+//! A constructor.<BR><BR>
 /*!
   Build an Airport object from its attributes.
 */
