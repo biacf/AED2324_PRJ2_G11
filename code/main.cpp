@@ -170,16 +170,9 @@ int main() {
                         std::string airline;
                         std::cout << "Airline: ";
                         std::cin >> airline;
-                        int total_flights = 0;
-                        for (FlightGraphV* v : flights.getFlightVSet()) {
-                            for (FlightGraphE e : v->getFlights()) {
-                                if (e.getAirline()->getCode() == airline) {
-                                    total_flights++;
-                                }
-                            }
-                        }
-                        std::cout << "The total number of flights from " << airline << " is "
-                                  << total_flights << std::endl;
+                        Airline* a = airlines.find(airline)->second;
+                        std::cout << "The total number of flights from " << a->getCode()
+                                  << " is " << a->getFlights() << std::endl;
                         break;
                     }
                     case 'g': {
