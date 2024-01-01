@@ -15,4 +15,6 @@ Airport::Airport(std::string code, std::string name, std::string city, std::stri
     this->country = country;
     this->latitude = latitude;
     this->longitude = longitude;
+    incoming = 0;
+    outgoing = 0;
 }

@@ -4,6 +4,7 @@
 #include <set>
 #include <queue>
 #include <cmath>
+#include <algorithm>
 
 
 /**
@@ -61,6 +62,18 @@ std::vector<Airport*> findAirportsByCoords(float lat, float lon, std::unordered_
     return res;
 }
 
+/**
+ *
+ * Function that compares two airports based on the amount of traffic they get
+ *
+ * @param a : Airport a.
+ * @param b : Airport b.
+ * @return \b True if a has more traffic than b, \b false otherwise.
+ */
+bool trafficCompare(const Airport* a, const Airport* b) {
+    return a->getTraffic() > b->getTraffic();
+}
+
 int main() {
     std::unordered_map<std::string, Airline *> airlines;
     std::unordered_map<std::string, Airport *> airports;
@@ -102,11 +115,12 @@ int main() {
                 std::cout << "i. Total Destinations From X Airport" << std::endl; //prompts for layovers, can be done with bfs adaptation
                 std::cout << "j. Longest Trip(s)" << std::endl; // can be done with dfs i'm pretty sure
                 std::cout << "k. Essential Airports" << std::endl; //get articulation points
+                std::cout << "l. Top K Airports With The Most Air Traffic" << std::endl;
 
                 char statistical_op;
                 std::cin >> statistical_op;
 
-                while ((statistical_op < 'a' || statistical_op > 'k') || !isalpha(statistical_op)) {
+                while ((statistical_op < 'a' || statistical_op > 'l') || !isalpha(statistical_op)) {
                     std::cin >> statistical_op;
                 }
 
@@ -307,10 +321,33 @@ int main() {
 
                         std::cout << "In total there are " << essential.size() << " essential airports" << std::endl;
                     }
+                    case 'l':{
+                        int k;
+                        std::cout << "Top __?: ";
+                        std::cin >> k;
+
+                        std::vector<Airport *> airportsWithHighestTraffic;
+
+                        for(auto a : airports){
+                            airportsWithHighestTraffic.push_back(a.second);
+                        }
+
+                        std::sort(airportsWithHighestTraffic.begin(), airportsWithHighestTraffic.end(), trafficCompare);
+
+                        auto it = airportsWithHighestTraffic.begin();
+
+                        for(int i = 0; i < k; i++){
+                            std::cout << i+1 << ". " << (*it)->getName() << " (" << (*it)->getCode() << ") with " << (*it)->getIncoming() << " incoming and " << (*it)->getOutgoing() << " outgoing flights. [" << (*it)->getTraffic() << " total]" << std::endl;
+                            it++;
+                        }
+
+                        break;
+                    }
                     default:{
                         break;
                     }
                 }
+
 
 
 //                int max = 0;
