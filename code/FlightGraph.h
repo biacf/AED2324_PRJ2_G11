@@ -27,13 +27,13 @@ private:
 
 public:
     explicit FlightGraphV(Airport* airport);
-    void addEdge(FlightGraphV *dest, Airline* airline); /*!< Add flight */
-    bool removeEdgeTo(FlightGraphV *d); /*!< Remove flight */
+    void addEdge(FlightGraphV *dest, Airline* airline);
+    bool removeEdgeTo(FlightGraphV *d);
     bool isVisited() const{return visited;} /*! A getter method @return boolean value */
     void setVisited(bool value){visited = value;} /*! A setter method for visited parameter */
     void setNum(int numvalue){ this->num = numvalue;} /*! A setter method for num parameter */
     int getNum() const{return num;} /*! A getter method @return value parameter */
-    void setLow(int value){ low = value;} /*! A setter method for low parameter */
+    void setLow(int value){low = value;} /*! A setter method for low parameter */
     int getLow() const{return low;}/*! A getter method @return low parameter */
     std::vector<FlightGraphE> getFlights(){return flights;} /*! A getter method @return Vector of outgoing flights */
     std::string getCode(){return code;} /*! A getter method @return Airport code for lookup purposes */

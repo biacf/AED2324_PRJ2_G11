@@ -20,6 +20,40 @@ FlightGraphV::FlightGraphV(Airport* airport) {
     visited = false;
 }
 
+/**
+ * @brief Adds outgoing \b trip (<i>edge</i>) to airport. <BR><BR>
+ *
+ * Adds an <b>outgoing trip</b> that connects the <b>source airport</b> and the <b>destination airport</b>, performed by a certain \b airline.
+ *
+ * @param dest : Destination airport code.
+ * @param airline : Airline that performs the connection.
+ */
+void FlightGraphV::addEdge(FlightGraphV *dest, Airline* airline) {
+    flights.push_back(FlightGraphE(dest, airline));
+    if (std::find(flights_from_airline.begin(), flights_from_airline.end(), airline) == flights_from_airline.end()) {
+        flights_from_airline.push_back(FlightGraphE(dest, airline));
+    }
+}
+
+/**
+ * @brief Removes <b>outgoing trip</b> from airport.<BR><BR>
+ *
+ * Removes \b trip from the vector of outgoing trips from a certain airport.<BR><BR>
+ * Returns \b true if successful.<BR>
+ * Returns \b false if trip wasn't in vector in the first place.
+ *
+ * @param d : Destination airport (vertex)
+ * @return \b True if trip was successfully removed, \b false otherwise.
+ */
+bool FlightGraphV::removeEdgeTo(FlightGraphV *d) {
+    for (auto it = flights.begin(); it != flights.end(); it++)
+        if (it->getDest()  == d) {
+            flights.erase(it);
+            return true;
+        }
+    return false;
+}
+
 //! A \b constructor.<BR><BR>
 /*!
   Builds a <b>Flight Graph Edge</b> (<i>Trip</i>) object from its <b>destination vertex</b> (<i>airport</i>) and <b>airline</b>.
@@ -29,6 +63,14 @@ FlightGraphE::FlightGraphE(FlightGraphV *dest, Airline* airline) {
     this->airline = airline;
 }
 
+/**
+ * @brief Operator override method for graph edges.
+ *
+ * Method
+ *
+ * @param pns
+ * @return
+ */
 bool FlightGraphE::operator==( Airline* pns) const {
     return airline == pns;
 }
@@ -158,39 +200,9 @@ void FlightGraph::getDestinations(std::string airport_code, int layovers, std::u
     }
 }
 
-/**
- * @brief Adds outgoing \b trip (<i>edge</i>) to airport. <BR><BR>
- *
- * Adds an <b>outgoing trip</b> that connects the <b>source airport</b> and the <b>destination airport</b>, performed by a certain \b airline.
- *
- * @param dest : Destination airport code.
- * @param airline : Airline that performs the connection.
- */
-void FlightGraphV::addEdge(FlightGraphV *dest, Airline* airline) {
-    flights.push_back(FlightGraphE(dest, airline));
-    if (std::find(flights_from_airline.begin(), flights_from_airline.end(), airline) == flights_from_airline.end()) {
-        flights_from_airline.push_back(FlightGraphE(dest, airline));
-    }
-}
 
-/**
- * @brief Removes <b>outgoing trip</b> from airport.<BR><BR>
- *
- * Removes \b trip from the vector of outgoing trips from a certain airport.<BR><BR>
- * Returns \b true if successful.<BR>
- * Returns \b false if trip wasn't in vector in the first place.
- *
- * @param d : Destination airport (vertex)
- * @return \b True if trip was successfully removed, \b false otherwise.
- */
-bool FlightGraphV::removeEdgeTo(FlightGraphV *d) {
-    for (auto it = flights.begin(); it != flights.end(); it++)
-        if (it->getDest()  == d) {
-            flights.erase(it);
-            return true;
-        }
-    return false;
-}
+
+
 
 
 /**
