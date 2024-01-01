@@ -37,7 +37,7 @@ public:
     void incrementIncoming() {incoming++;}
     /*! A getter method @return Incoming flights */
     int getIncoming() const{return incoming;}
-    /*! Increment ougoing integer value */
+    /*! Increment outgoing integer value */
     void incrementOutgoing(){outgoing++;}
     /*! A getter method @return Outgoing flights */
     int getOutgoing() const{return outgoing;}

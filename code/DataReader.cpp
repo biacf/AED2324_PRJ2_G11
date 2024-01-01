@@ -13,7 +13,7 @@ DataReader::DataReader(std::string path) {
 }
 
 /**
- * @brief Extracts data from <i>airlines.csv</i>
+ * @brief Extracts data from <i>airlines.csv</i>.
  *
  * @return Map that associates a \b code to the <b>airline object</b> for easier lookup.
  */
@@ -40,7 +40,9 @@ std::unordered_map<std::string, Airline*> DataReader::populate_airlines() {
 }
 
 /**
- * @brief Extracts data from <i>airports.csv</i>.
+ * @brief Extracts data from <i>airports.csv</i>.<BR><BR>
+ *
+ * Along with creating all the airport objects, this method also populates an unordered map that associates a certain city with the airports present within it.
  *
  * @return Map that associates a \b code to the <b>airport object</b> for easier lookup.
  */
@@ -71,7 +73,9 @@ std::unordered_map<std::string, Airport*> DataReader::populate_airports(std::uno
 }
 
 /**
- * @brief Extracts data from <i>flights.csv</i>
+ * @brief Extracts data from <i>flights.csv</i>.<BR><BR>
+ *
+ * Along with creating the graph also increments attributes in the airport objects and airline objects that keep track of the amount of flights concerning each object.
  *
  * @param airports : Map of airports.
  * @param airlines : Map of airlines
@@ -108,9 +112,9 @@ FlightGraph DataReader::populate_graph(std::unordered_map<std::string, Airport*>
 }
 
 /**
- * @brief Extracts number of lines from <i>flights.csv</i>
+ * @brief Extracts number of lines from <i>flights.csv</i>.
  *
- * @return int representing the number of flights
+ * @return Integer representing the number of flights.
  */
 int DataReader::number_of_flights() {
     file.open(filename);

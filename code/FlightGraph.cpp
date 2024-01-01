@@ -10,9 +10,29 @@
 #include <iostream>
 #include "FlightGraph.h"
 
+//! A \b constructor.<BR><BR>
+/*!
+  Builds a <b>Flight Graph Vertex</b> object from an \b airport object.
+*/
+FlightGraphV::FlightGraphV(Airport* airport) {
+    this->airport = airport;
+    this->code = airport->getCode();
+    visited = false;
+}
+
+//! A \b constructor.<BR><BR>
+/*!
+  Builds a <b>Flight Graph Edge</b> (<i>Trip</i>) object from its <b>destination vertex</b> (<i>airport</i>) and <b>airline</b>.
+*/
+FlightGraphE::FlightGraphE(FlightGraphV *dest, Airline* airline) {
+    this->dest = dest;
+    this->airline = airline;
+}
+
 bool FlightGraphE::operator==( Airline* pns) const {
     return airline == pns;
 }
+
 /**
  * @brief Checks if a \b vertex exists.<BR><BR>
  *
@@ -172,25 +192,6 @@ bool FlightGraphV::removeEdgeTo(FlightGraphV *d) {
     return false;
 }
 
-//! A \b constructor.
-/*!
-  Builds a <b>Flight Graph Vertex</b> object from an \b airport object.
-*/
-FlightGraphV::FlightGraphV(Airport* airport) {
-    this->airport = airport;
-    this->code = airport->getCode();
-    visited = false;
-    processing = false;
-}
-
-//! A \b constructor.
-/*!
-  Builds a <b>Flight Graph Edge</b> (<i>Trip</i>) object from its <b>destination vertex</b> (<i>airport</i>) and <b>airline</b>.
-*/
-FlightGraphE::FlightGraphE(FlightGraphV *dest, Airline* airline) {
-    this->dest = dest;
-    this->airline = airline;
-}
 
 /**
  * @brief Get Airports that are a certain amount of layovers away. <BR><BR>

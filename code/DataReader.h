@@ -12,6 +12,9 @@
 #include <map>
 #include "FlightGraph.h"
 
+/**
+ * Custom hash function that allows an unordered map to have a pair as a key.
+ */
 struct pair_hash {
     inline std::size_t operator()(const std::pair<std::string, std::string> &v) const {
         return std::hash<std::string>()(v.first) ^ std::hash<std::string>()(v.second);
@@ -20,7 +23,7 @@ struct pair_hash {
 
 class DataReader {
 private:
-    std::string filename; /*!< Path to the .csv file*/
+    std::string filename; /*!< Path to the .csv file */
     std::ifstream file; /*!< ifstream object */
 public:
     explicit DataReader(std::string path);
