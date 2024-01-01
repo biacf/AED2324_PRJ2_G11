@@ -192,6 +192,15 @@ FlightGraphE::FlightGraphE(FlightGraphV *dest, Airline* airline) {
     this->airline = airline;
 }
 
+/**
+ * @brief Get Airports that are a certain amount of layovers away. <BR><BR>
+ *
+ * Using \b BFS, get a vector of Airports that need a certain amount of layovers to be reached from a certain source airport.
+ *
+ * @param source : Source Airport
+ * @param layovers : Number of layovers.
+ * @return Vector of Airports that are a certain number of layovers away from source.
+ */
 std::vector<Airport*> FlightGraph::AirportsAtDistanceXLayovers(const std::string &source, int layovers) const {
     std::vector<Airport*> res;
     std::queue<FlightGraphV*> vers;

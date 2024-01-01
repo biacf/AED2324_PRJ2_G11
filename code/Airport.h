@@ -16,6 +16,8 @@ private:
     std::string country; /*!< Airport country */
     float latitude{}; /*!< Airport latitude */
     float longitude{}; /*!< Airport longitude */
+    int incoming;/*!< Incoming Flights */
+    int outgoing;/*!< Outgoing Flights */
 public:
     Airport()= default;/*! Default constructor */
     Airport(std::string code, std::string name, std::string city, std::string country, float latitude, float longitude);
@@ -31,6 +33,16 @@ public:
     float getLatitude() const{return latitude;}
     /*! A getter method @return Airport longitude */
     float getLongitude() const{return longitude;}
+    /*! Increment incoming integer value */
+    void incrementIncoming() {incoming++;}
+    /*! A getter method @return Incoming flights */
+    int getIncoming() const{return incoming;}
+    /*! Increment ougoing integer value */
+    void incrementOutgoing(){outgoing++;}
+    /*! A getter method @return Outgoing flights */
+    int getOutgoing() const{return outgoing;}
+    /*! @return Number of incoming and outgoing flights */
+    int getTraffic() const{return outgoing+incoming;}
 };
 
 
