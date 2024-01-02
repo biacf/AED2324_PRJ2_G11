@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=11"/>
 <meta name="generator" content="Doxygen 1.9.8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>Flight Management System GR11: FlightGraph Class Reference</title>
+<title>G11 Flight Information System: FlightGraph Class Reference</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -21,7 +21,7 @@
  <tbody>
  <tr id="projectrow">
   <td id="projectalign">
-   <div id="projectname">Flight Management System GR11
+   <div id="projectname">G11 Flight Information System
    </div>
   </td>
  </tr>
@@ -131,9 +131,9 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>setIndex</b> (int i)<
 <tr class="memitem:a8583ceaad67ef902d4ade1c11f57d5ba" id="r_a8583ceaad67ef902d4ade1c11f57d5ba"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_flight_graph.html#a8583ceaad67ef902d4ade1c11f57d5ba">findPaths</a> (<a class="el" href="class_flight_graph_v.html">FlightGraphV</a> *vertex, std::unordered_map&lt; <a class="el" href="class_flight_graph_v.html">FlightGraphV</a> *, std::vector&lt; <a class="el" href="class_flight_graph_v.html">FlightGraphV</a> * &gt; &gt; &amp;predecessors, std::vector&lt; <a class="el" href="class_flight_graph_v.html">FlightGraphV</a> * &gt; &amp;currentPath, std::vector&lt; std::vector&lt; <a class="el" href="class_flight_graph_v.html">FlightGraphV</a> * &gt; &gt; &amp;allPaths)</td></tr>
 <tr class="memdesc:a8583ceaad67ef902d4ade1c11f57d5ba"><td class="mdescLeft">&#160;</td><td class="mdescRight">Method that finds all paths that lead to a destination.  <br /></td></tr>
 <tr class="separator:a8583ceaad67ef902d4ade1c11f57d5ba"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:af3412e138ed570932aa15acdbe176022" id="r_af3412e138ed570932aa15acdbe176022"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_flight_graph.html#af3412e138ed570932aa15acdbe176022">printPaths</a> (<a class="el" href="class_flight_graph_v.html">FlightGraphV</a> *destination, std::unordered_map&lt; <a class="el" href="class_flight_graph_v.html">FlightGraphV</a> *, std::vector&lt; <a class="el" href="class_flight_graph_v.html">FlightGraphV</a> * &gt; &gt; &amp;predecessors)</td></tr>
-<tr class="memdesc:af3412e138ed570932aa15acdbe176022"><td class="mdescLeft">&#160;</td><td class="mdescRight">Prints paths to destination.  <br /></td></tr>
-<tr class="separator:af3412e138ed570932aa15acdbe176022"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a13a5a16f6885ac52bb3e230be301e2a4" id="r_a13a5a16f6885ac52bb3e230be301e2a4"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_flight_graph.html#a13a5a16f6885ac52bb3e230be301e2a4">printPaths</a> (<a class="el" href="class_flight_graph_v.html">FlightGraphV</a> *destination, std::unordered_map&lt; <a class="el" href="class_flight_graph_v.html">FlightGraphV</a> *, std::vector&lt; <a class="el" href="class_flight_graph_v.html">FlightGraphV</a> * &gt; &gt; &amp;predecessors, int &amp;i)</td></tr>
+<tr class="memdesc:a13a5a16f6885ac52bb3e230be301e2a4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Prints paths to destination.  <br /></td></tr>
+<tr class="separator:a13a5a16f6885ac52bb3e230be301e2a4"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Member Function Documentation</h2>
 <a id="a90e3936b70b55a49d61e9a8af77474f0" name="a90e3936b70b55a49d61e9a8af77474f0"></a>
@@ -526,8 +526,8 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>setIndex</b> (int i)<
 
 </div>
 </div>
-<a id="af3412e138ed570932aa15acdbe176022" name="af3412e138ed570932aa15acdbe176022"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#af3412e138ed570932aa15acdbe176022">&#9670;&#160;</a></span>printPaths()</h2>
+<a id="a13a5a16f6885ac52bb3e230be301e2a4" name="a13a5a16f6885ac52bb3e230be301e2a4"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a13a5a16f6885ac52bb3e230be301e2a4">&#9670;&#160;</a></span>printPaths()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -542,7 +542,13 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>setIndex</b> (int i)<
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">std::unordered_map&lt; <a class="el" href="class_flight_graph_v.html">FlightGraphV</a> *, std::vector&lt; <a class="el" href="class_flight_graph_v.html">FlightGraphV</a> * &gt; &gt; &amp;&#160;</td>
-          <td class="paramname"><em>predecessors</em>&#160;</td>
+          <td class="paramname"><em>predecessors</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int &amp;&#160;</td>
+          <td class="paramname"><em>i</em>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -558,6 +564,7 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>setIndex</b> (int i)<
   <table class="params">
     <tr><td class="paramname">destination</td><td>: Destination airport being handled. </td></tr>
     <tr><td class="paramname">predecessors</td><td>: Map associating an airport with its predecessors. </td></tr>
+    <tr><td class="paramname">i</td><td>: Makes output more readable. </td></tr>
   </table>
   </dd>
 </dl>

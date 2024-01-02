@@ -385,6 +385,7 @@ void FlightGraph::findBestFlight(std::vector<Airport *> sources, std::vector<Air
  *
  * @param destination : Destination airport being handled.
  * @param predecessors : Map associating an airport with its predecessors.
+ * @param i : Makes output more readable.
  */
 void FlightGraph::printPaths(FlightGraphV* destination, std::unordered_map<FlightGraphV*, std::vector<FlightGraphV*>>& predecessors, int& i) {
     std::vector<std::vector<FlightGraphV*>> allPaths;

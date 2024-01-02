@@ -6,7 +6,7 @@ set(CMAKE_CXX_STANDARD 11)
 
 find_package(Doxygen)
 if(DOXYGEN_FOUND)
-    set(BUILD_DOC_DIR "${CMAKE_SOURCE_DIR}/docs/output")
+    set(BUILD_DOC_DIR "${CMAKE_SOURCE_DIR}/docs")
     if(NOT EXISTS "${BUILD_DOC_DIR}")
         file(MAKE_DIRECTORY "${BUILD_DOC_DIR}")
     endif()
