@@ -52,7 +52,7 @@ float haversineDistance(float lat1, float lon1, float lat2, float lon2) {
 std::vector<Airport*> findAirportsByCoords(float lat, float lon, std::unordered_map<std::string, Airport *> airports) {
     std::vector<Airport *> res;
     float dist;
-    for(auto a : airports){
+    for(const auto& a : airports){
         dist = haversineDistance(lat, lon, a.second->getLatitude(), a.second->getLongitude());
         if(dist <= 100){
             res.push_back(a.second);
@@ -63,7 +63,6 @@ std::vector<Airport*> findAirportsByCoords(float lat, float lon, std::unordered_
 }
 
 /**
- *
  * Function that compares two airports based on the amount of traffic they get
  *
  * @param a : Airport a.
@@ -104,23 +103,24 @@ int main() {
         switch (op) {
 
             case '1': {
-                std::cout << "a. Total Airports" << std::endl; // easy... airports.size()
-                std::cout << "b. Total Flights" << std::endl; //easy from the graph but not efficient probably... maybe do a line count for the flights.csv
-                std::cout << "c. Outgoing Flights From X Airport" << std::endl; // easy
-                std::cout << "d. Airlines Flying From X Airport" << std::endl; // this is relatively easy
-                std::cout << "e. Outgoing Flights From X City" << std::endl; // again maybe create a City Class containing airports but idk how that would work
-                std::cout << "f. Total Flights From X Airline" << std::endl; //we probably need to create another graph OR another data structure to store this info ????
-                std::cout << "g. Reachable Countries From X Airport" << std::endl; // easy
-                std::cout << "h. Reachable Countries From X City" << std::endl; // maybe create a City Class.... still thinking about this
-                std::cout << "i. Total Destinations From X Airport" << std::endl; //prompts for layovers, can be done with bfs adaptation
-                std::cout << "j. Longest Trip(s)" << std::endl; // can be done with dfs i'm pretty sure
-                std::cout << "k. Essential Airports" << std::endl; //get articulation points
+                std::cout << "a. Total Airports" << std::endl;
+                std::cout << "b. Total Flights" << std::endl;
+                std::cout << "c. Outgoing Flights From X Airport" << std::endl;
+                std::cout << "d. Airlines Flying From X Airport" << std::endl;
+                std::cout << "e. Outgoing Flights From X City" << std::endl;
+                std::cout << "f. Total Flights From X Airline" << std::endl;
+                std::cout << "g. Reachable Countries From X Airport" << std::endl;
+                std::cout << "h. Reachable Countries From X City" << std::endl;
+                std::cout << "i. Total Destinations From X Airport" << std::endl;
+                std::cout << "j. Longest Trip(s)" << std::endl;
+                std::cout << "k. Essential Airports" << std::endl;
                 std::cout << "l. Top K Airports With The Most Air Traffic" << std::endl;
 
                 char statistical_op;
                 std::cin >> statistical_op;
 
                 while ((statistical_op < 'a' || statistical_op > 'l') || !isalpha(statistical_op)) {
+                    std::cout << "Please enter a valid option: ";
                     std::cin >> statistical_op;
                 }
 
@@ -138,7 +138,7 @@ int main() {
                         std::cout << "Airport: ";
                         std::cin >> airport;
                         while (airports.find(airport) == airports.end()) {
-                            std::cout << "Airport: ";
+                            std::cout << "Enter a valid Airport code: ";
                             std::cin >> airport;
                         }
                         int outgoing_flights = flights.findVertex(airport)->getOutgoingF();
@@ -151,7 +151,7 @@ int main() {
                         std::cout << "Airport: ";
                         std::cin >> airport;
                         while (airports.find(airport) == airports.end()) {
-                            std::cout << "Airport: ";
+                            std::cout << "Enter a valid Airport code: ";
                             std::cin >> airport;
                         }
                         int outgoing_airlines = flights.findVertex(airport)->getOutgoingA();
@@ -165,19 +165,22 @@ int main() {
                         std::cin.ignore();
                         std::cout << "City:";
                         std::getline(std::cin, city);
-                        std::cout << "Coutry:";
+                        std::cout << "Country:";
                         std::getline(std::cin, country);
                         std::cout << std::endl;
                         while (cities.find(std::make_pair(city, country)) == cities.end()) {
+                            std::cout << "Invalid City, Country pair." << std::endl;
                             std::cout << "City: ";
-                            std::cin >> city;
+                            std::getline(std::cin, city);
                             std::cout << "Country: ";
-                            std::cin >> country;
+                            std::getline(std::cin, country);
                         }
                         int outgoing_flights = 0;
+
                         for (Airport* a : cities.find(std::make_pair(city, country))->second) {
                             outgoing_flights += flights.findVertex(a->getCode())->getOutgoingF();
                         }
+
                         std::cout << "The total number of outgoing flights from " << city << ", " << country << " is "
                                   << outgoing_flights << std::endl;
                         break;
@@ -187,7 +190,7 @@ int main() {
                         std::cout << "Airline: ";
                         std::cin >> airline;
                         while (airlines.find(airline) == airlines.end()) {
-                            std::cout << "Airline: ";
+                            std::cout << "Enter a valid Airline code: ";
                             std::cin >> airline;
                         }
                         Airline* a = airlines.find(airline)->second;
@@ -203,7 +206,7 @@ int main() {
                         std::cin >> airport_code;
 
                         while (airports.find(airport_code) == airports.end()) {
-                            std::cout << "Airport doesn't exist" << std::endl;
+                            std::cout << "Enter a valid airport code: ";
                             std::cin >> airport_code;
                         }
 
@@ -216,12 +219,12 @@ int main() {
                             }
                         }
 
-                        std::cout << "You can fly to " << destinations.size() << " countries from " << airport_name
-                                  << " (" << airport_code << ")" << std::endl;
                         for (const auto &d: destinations) {
                             std::cout << d << std::endl;
                         }
 
+                        std::cout << "You can fly to " << destinations.size() << " countries from " << airport_name
+                                  << " (" << airport_code << ")" << std::endl;
                         break;
                     }
                     case 'h': {
@@ -231,8 +234,16 @@ int main() {
                         std::cin.ignore();
                         std::cout << "City:";
                         std::getline(std::cin, city);
-                        std::cout << "Coutry:";
+                        std::cout << "Country:";
                         std::getline(std::cin, country);
+                        while (cities.find(std::make_pair(city, country)) == cities.end()) {
+                            std::cout << "Invalid City, Country pair." << std::endl;
+                            std::cout << "City: ";
+                            std::getline(std::cin, city);
+                            std::cout << "Country: ";
+                            std::getline(std::cin, country);
+                        }
+
                         std::cout << std::endl;
                         for(auto a : cities[std::make_pair(city,country)]){
                             FlightGraphV* vertex = flights.findVertex(a->getCode());
@@ -241,6 +252,7 @@ int main() {
                                 destinations_of_city.emplace(dest->getAirport()->getCountry());
                             }
                         }
+
                         if (!destinations_of_city.empty()) {
                             std::cout << "You can fly to " << destinations_of_city.size() << " countries from " << city <<", "<<country<<": "<<std::endl;
                             for (const auto &a: destinations_of_city) {
@@ -263,7 +275,7 @@ int main() {
                         std::cin >> airport_code;
 
                         while (airports.find(airport_code) == airports.end()) {
-                            std::cout << "Airport doesn't exist" << std::endl;
+                            std::cout << "Enter valid Airport code: ";
                             std::cin >> airport_code;
                         }
 
@@ -341,18 +353,23 @@ int main() {
                     }
                     case 'k':{
                         std::set<Airport*> essential;
-                        flights.setIndex(0);
+                        FlightGraph copy = flights;
+                        copy.setIndex(0);
 
                         //set up for articulation point lookup
-                        for(auto v : flights.getFlightVSet()){
+                        for(auto v : copy.getFlightVSet()){
                             v->setVisited(false);
                             v->setNum(-1);
                             v->setLow(-1);
+
+                            for(auto e : v->getFlights()){
+                                e.getDest()->addEdge(v,e.getAirline());
+                            }
                         }
 
-                        for (auto v: flights.getFlightVSet()){
+                        for (auto v: copy.getFlightVSet()){
                             if(!v->isVisited()){
-                                flights.dfsArt(v, nullptr, essential);
+                                copy.dfsArt(v, nullptr, essential);
                             }
                         }
 
@@ -364,6 +381,8 @@ int main() {
                         }
 
                         std::cout << "In total there are " << essential.size() << " essential airports" << std::endl;
+
+                        break;
                     }
                     case 'l':{
                         int k;
@@ -372,7 +391,9 @@ int main() {
 
                         std::vector<Airport *> airportsWithHighestTraffic;
 
-                        for(auto a : airports){
+                        airportsWithHighestTraffic.reserve(airports.size());
+
+                        for(const auto& a : airports){
                             airportsWithHighestTraffic.push_back(a.second);
                         }
 
@@ -391,60 +412,6 @@ int main() {
                         break;
                     }
                 }
-
-
-
-//                int max = 0;
-//                Airport* start;
-//                Airport* end;
-//                std::vector<std::pair<Airport*,Airport*>> pairs;
-//
-//                for(auto v1 : flights.getFlightVSet()){
-//                    std::queue<std::pair<int, FlightGraphV*>> q;
-//                    for (auto a: flights.getFlightVSet()) {
-//                        a->setVisited(false);
-//                    }
-//                    q.emplace(0,v1);
-//                    v1->setVisited(true);
-//                    while(!q.empty()){
-//                        FlightGraphV* tocheck = q.front().second;
-//                        for(FlightGraphE e : tocheck->getFlights()){
-//                            FlightGraphV *v = e.getDest();
-//                            if(!v->isVisited()){
-//                                v->setVisited(true);
-//                                if(q.front().first + 1 > max){
-//                                    max = q.front().first + 1;
-//                                    start = v1->getAirport();
-//                                    end = v->getAirport();
-//                                    pairs.clear();
-//                                    pairs.emplace_back(start,end);
-//                                }
-//                                else if(q.front().first + 1 == max){
-//                                    start = v1->getAirport();
-//                                    end = v->getAirport();
-//                                    pairs.emplace_back(start,end);
-//                                }
-//                                q.emplace(q.front().first + 1, v);
-//                            }
-//                        }
-//                        q.pop();
-//                    }
-//                }
-//                if (!pairs.empty()) {
-//                    std::cout << "Maximum number of stops: " << max << std::endl;
-//                    std::cout << "Starting and Ending vertices for the longest trip(s):" << std::endl;
-//                    for (const auto& path : pairs) {
-//                        std::cout << path.first->getCode()<< " - " << path.second->getCode() << std::endl;
-//                    }
-//                }
-//                break;}
-
-
-
-                // do a switch OR create an exterior function to deal with it just to avoid crowding this function
-                // when prompting for input CHECK IF THE INPUT IS VALID... ex: if it's an airport, look it up in the map...
-                // maybe create functions for some prompts in the FlightGraph class
-
 
                 break;
             }
@@ -466,7 +433,7 @@ int main() {
                 std::cout << "Input Style: ";
                 std::cin >> option;
                 while(option < '1' || option > '4'){
-                    std::cout << "Enter valid style: " << std::endl;
+                    std::cout << "Enter valid style: ";
                     std::cin >> option;
                 }
 
@@ -475,7 +442,7 @@ int main() {
                         std::cout << "Source code: ";
                         std::cin >> input;
                         while(airports.find(input) == airports.end()){
-                            std::cout << "Enter valid code: " << std::endl;
+                            std::cout << "Enter valid code: ";
                             std::cin >> input;
                         }
 
@@ -497,6 +464,13 @@ int main() {
                         std::getline(std::cin, city);
                         std::cout << "Source country: ";
                         std::getline(std::cin, country);
+                        while (cities.find(std::make_pair(city, country)) == cities.end()) {
+                            std::cout << "Invalid City, Country pair." << std::endl;
+                            std::cout << "City: ";
+                            std::getline(std::cin, city);
+                            std::cout << "Country: ";
+                            std::getline(std::cin, country);
+                        }
                         sources = cities[std::make_pair(city, country)];
                         break;
                     case '4':
@@ -549,6 +523,13 @@ int main() {
                         std::getline(std::cin, city);
                         std::cout << "Destination country: ";
                         std::getline(std::cin, country);
+                        while (cities.find(std::make_pair(city, country)) == cities.end()) {
+                            std::cout << "Invalid City, Country pair." << std::endl;
+                            std::cout << "City: ";
+                            std::getline(std::cin, city);
+                            std::cout << "Country: ";
+                            std::getline(std::cin, country);
+                        }
                         destinations = cities[std::make_pair(city,country)];
                         break;
                     case '4':
@@ -556,7 +537,7 @@ int main() {
                         std::cin >> lat;
                         std::cout << "Destination longitude: ";
                         std::cin >> lon;
-                        sources = findAirportsByCoords(lat, lon, airports);
+                        destinations = findAirportsByCoords(lat, lon, airports);
                         break;
                     default:
                         break;
