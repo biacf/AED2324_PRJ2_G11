@@ -93,7 +93,7 @@ int main() {
     flights = flight_info.populate_graph(airports, airlines);
     number_of_flights = flight_info.number_of_flights();
 
-    std::cout << "Welcome to the L.EIC2324 Flight Management Guide!" << std::endl;
+    std::cout << "Welcome to the L.EIC2324 Flight Information Guide!" << std::endl;
     std::cout << "How can we help you?" << std::endl;
     while (true) {
         char op;
