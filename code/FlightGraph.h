@@ -72,7 +72,7 @@ public:
     void dfsArt(FlightGraphV *v, FlightGraphV *parent, std::set<Airport*> &articulationPoints);
     void findBestFlight(std::vector<Airport*> sources, std::vector<Airport*> destinations);
     void findPaths(FlightGraphV *vertex, std::unordered_map<FlightGraphV *, std::vector<FlightGraphV *>> &predecessors,std::vector<FlightGraphV *> &currentPath, std::vector<std::vector<FlightGraphV *>> &allPaths);
-    void printPaths(FlightGraphV *destination,std::unordered_map<FlightGraphV *, std::vector<FlightGraphV *>> &predecessors);
+    void printPaths(FlightGraphV *destination,std::unordered_map<FlightGraphV *, std::vector<FlightGraphV *>> &predecessors, int& i);
 };
 
 

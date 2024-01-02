@@ -369,10 +369,11 @@ void FlightGraph::findBestFlight(std::vector<Airport *> sources, std::vector<Air
         std::cout << "You're already at your destination!" << std::endl;
         return;
     }
+    int i = 1;
     // output
     for (auto dest : destinationVertices) {
         if (layovers[dest] == minLayoversToDest) {
-            printPaths(dest, predecessors);
+            printPaths(dest, predecessors, i);
         }
     }
 }
@@ -385,10 +386,9 @@ void FlightGraph::findBestFlight(std::vector<Airport *> sources, std::vector<Air
  * @param destination : Destination airport being handled.
  * @param predecessors : Map associating an airport with its predecessors.
  */
-void FlightGraph::printPaths(FlightGraphV* destination, std::unordered_map<FlightGraphV*, std::vector<FlightGraphV*>>& predecessors) {
+void FlightGraph::printPaths(FlightGraphV* destination, std::unordered_map<FlightGraphV*, std::vector<FlightGraphV*>>& predecessors, int& i) {
     std::vector<std::vector<FlightGraphV*>> allPaths;
     std::vector<FlightGraphV*> currentPath;
-    int i = 1;
 
     findPaths(destination, predecessors, currentPath, allPaths);
 

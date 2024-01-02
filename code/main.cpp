@@ -72,7 +72,11 @@ std::vector<Airport*> findAirportsByCoords(float lat, float lon, std::unordered_
 bool trafficCompare(const Airport* a, const Airport* b) {
     return a->getTraffic() > b->getTraffic();
 }
-
+/*
+int main(){
+    std::cout << haversineDistance(40.639751,-73.778925,40.639751,-73.778925);
+}
+*/
 int main() {
     std::unordered_map<std::string, Airline *> airlines;
     std::unordered_map<std::string, Airport *> airports;
@@ -254,10 +258,11 @@ int main() {
                         }
 
                         if (!destinations_of_city.empty()) {
-                            std::cout << "You can fly to " << destinations_of_city.size() << " countries from " << city <<", "<<country<<": "<<std::endl;
+
                             for (const auto &a: destinations_of_city) {
                                 std::cout << a << std::endl;
                             }
+                            std::cout << "You can fly to " << destinations_of_city.size() << " countries from " << city <<", "<<country << std::endl;
                         } else {
                             std::cout << "City: " << city << " in " << country<< " not found " << std::endl;
                         }
