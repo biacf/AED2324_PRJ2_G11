@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=11"/>
 <meta name="generator" content="Doxygen 1.9.8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>My Project: code/DataReader.h Source File</title>
+<title>Flight Management System GR11: code/DataReader.h Source File</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -21,7 +21,7 @@
  <tbody>
  <tr id="projectrow">
   <td id="projectalign">
-   <div id="projectname">My Project
+   <div id="projectname">Flight Management System GR11
    </div>
   </td>
  </tr>
@@ -95,13 +95,10 @@ $(document).ready(function() { init_codefold(0); });
 <div class="line"><a id="l00012" name="l00012"></a><span class="lineno">   12</span><span class="preprocessor">#include &lt;map&gt;</span></div>
 <div class="line"><a id="l00013" name="l00013"></a><span class="lineno">   13</span><span class="preprocessor">#include &quot;FlightGraph.h&quot;</span></div>
 <div class="line"><a id="l00014" name="l00014"></a><span class="lineno">   14</span> </div>
-<div class="foldopen" id="foldopen00015" data-start="{" data-end="};">
-<div class="line"><a id="l00015" name="l00015"></a><span class="lineno"><a class="line" href="structpair__hash.html">   15</a></span><span class="keyword">struct </span><a class="code hl_struct" href="structpair__hash.html">pair_hash</a> {</div>
-<div class="line"><a id="l00016" name="l00016"></a><span class="lineno">   16</span>    <span class="keyword">template</span> &lt;<span class="keyword">class</span> T1, <span class="keyword">class</span> T2&gt;</div>
-<div class="line"><a id="l00017" name="l00017"></a><span class="lineno">   17</span>    std::size_t operator () (<span class="keyword">const</span> std::pair&lt;T1, T2&gt; &amp;p)<span class="keyword"> const </span>{</div>
-<div class="line"><a id="l00018" name="l00018"></a><span class="lineno">   18</span>        <span class="keyword">auto</span> hash1 = std::hash&lt;T1&gt;{}(p.first);</div>
-<div class="line"><a id="l00019" name="l00019"></a><span class="lineno">   19</span>        <span class="keyword">auto</span> hash2 = std::hash&lt;T2&gt;{}(p.second);</div>
-<div class="line"><a id="l00020" name="l00020"></a><span class="lineno">   20</span>        <span class="keywordflow">return</span> hash1 ^ hash2;</div>
+<div class="foldopen" id="foldopen00018" data-start="{" data-end="};">
+<div class="line"><a id="l00018" name="l00018"></a><span class="lineno"><a class="line" href="structpair__hash.html">   18</a></span><span class="keyword">struct </span><a class="code hl_struct" href="structpair__hash.html">pair_hash</a> {</div>
+<div class="line"><a id="l00019" name="l00019"></a><span class="lineno">   19</span>    <span class="keyword">inline</span> std::size_t operator()(<span class="keyword">const</span> std::pair&lt;std::string, std::string&gt; &amp;v)<span class="keyword"> const </span>{</div>
+<div class="line"><a id="l00020" name="l00020"></a><span class="lineno">   20</span>        <span class="keywordflow">return</span> std::hash&lt;std::string&gt;()(v.first) ^ std::hash&lt;std::string&gt;()(v.second);</div>
 <div class="line"><a id="l00021" name="l00021"></a><span class="lineno">   21</span>    }</div>
 <div class="line"><a id="l00022" name="l00022"></a><span class="lineno">   22</span>};</div>
 </div>
@@ -123,12 +120,12 @@ $(document).ready(function() { init_codefold(0); });
 <div class="line"><a id="l00036" name="l00036"></a><span class="lineno">   36</span> </div>
 <div class="line"><a id="l00037" name="l00037"></a><span class="lineno">   37</span><span class="preprocessor">#endif </span><span class="comment">//AED2324_PRJ2_G11_DATAREADER_H</span></div>
 <div class="ttc" id="aclass_data_reader_html"><div class="ttname"><a href="class_data_reader.html">DataReader</a></div><div class="ttdef"><b>Definition</b> DataReader.h:24</div></div>
-<div class="ttc" id="aclass_data_reader_html_a1b64ac3d0cacfd15daa4a51c30c7f364"><div class="ttname"><a href="class_data_reader.html#a1b64ac3d0cacfd15daa4a51c30c7f364">DataReader::populate_graph</a></div><div class="ttdeci">FlightGraph populate_graph(std::unordered_map&lt; std::string, Airport * &gt; airports, std::unordered_map&lt; std::string, Airline * &gt; airlines)</div><div class="ttdoc">Extracts data from flights.csv</div><div class="ttdef"><b>Definition</b> DataReader.cpp:80</div></div>
-<div class="ttc" id="aclass_data_reader_html_a6f071ffae3c6dd21d490b668eb63c891"><div class="ttname"><a href="class_data_reader.html#a6f071ffae3c6dd21d490b668eb63c891">DataReader::populate_airlines</a></div><div class="ttdeci">std::unordered_map&lt; std::string, Airline * &gt; populate_airlines()</div><div class="ttdoc">Extracts data from airlines.csv</div><div class="ttdef"><b>Definition</b> DataReader.cpp:20</div></div>
-<div class="ttc" id="aclass_data_reader_html_a90d8769d2da9f95208cb2fdb7763aac3"><div class="ttname"><a href="class_data_reader.html#a90d8769d2da9f95208cb2fdb7763aac3">DataReader::number_of_flights</a></div><div class="ttdeci">int number_of_flights()</div><div class="ttdoc">Extracts number of lines from flights.csv</div><div class="ttdef"><b>Definition</b> DataReader.cpp:110</div></div>
-<div class="ttc" id="aclass_data_reader_html_a9d863d678cd22701d57fffef35cde1a5"><div class="ttname"><a href="class_data_reader.html#a9d863d678cd22701d57fffef35cde1a5">DataReader::populate_airports</a></div><div class="ttdeci">std::unordered_map&lt; std::string, Airport * &gt; populate_airports(std::unordered_map&lt; std::pair&lt; std::string, std::string &gt;, std::vector&lt; Airport * &gt;, pair_hash &gt; &amp;cities)</div><div class="ttdoc">Extracts data from airports.csv.</div><div class="ttdef"><b>Definition</b> DataReader.cpp:47</div></div>
-<div class="ttc" id="aclass_flight_graph_html"><div class="ttname"><a href="class_flight_graph.html">FlightGraph</a></div><div class="ttdef"><b>Definition</b> FlightGraph.h:60</div></div>
-<div class="ttc" id="astructpair__hash_html"><div class="ttname"><a href="structpair__hash.html">pair_hash</a></div><div class="ttdef"><b>Definition</b> DataReader.h:15</div></div>
+<div class="ttc" id="aclass_data_reader_html_a1b64ac3d0cacfd15daa4a51c30c7f364"><div class="ttname"><a href="class_data_reader.html#a1b64ac3d0cacfd15daa4a51c30c7f364">DataReader::populate_graph</a></div><div class="ttdeci">FlightGraph populate_graph(std::unordered_map&lt; std::string, Airport * &gt; airports, std::unordered_map&lt; std::string, Airline * &gt; airlines)</div><div class="ttdoc">Extracts data from flights.csv.</div><div class="ttdef"><b>Definition</b> DataReader.cpp:84</div></div>
+<div class="ttc" id="aclass_data_reader_html_a6f071ffae3c6dd21d490b668eb63c891"><div class="ttname"><a href="class_data_reader.html#a6f071ffae3c6dd21d490b668eb63c891">DataReader::populate_airlines</a></div><div class="ttdeci">std::unordered_map&lt; std::string, Airline * &gt; populate_airlines()</div><div class="ttdoc">Extracts data from airlines.csv.</div><div class="ttdef"><b>Definition</b> DataReader.cpp:20</div></div>
+<div class="ttc" id="aclass_data_reader_html_a90d8769d2da9f95208cb2fdb7763aac3"><div class="ttname"><a href="class_data_reader.html#a90d8769d2da9f95208cb2fdb7763aac3">DataReader::number_of_flights</a></div><div class="ttdeci">int number_of_flights()</div><div class="ttdoc">Extracts number of lines from flights.csv.</div><div class="ttdef"><b>Definition</b> DataReader.cpp:119</div></div>
+<div class="ttc" id="aclass_data_reader_html_a9d863d678cd22701d57fffef35cde1a5"><div class="ttname"><a href="class_data_reader.html#a9d863d678cd22701d57fffef35cde1a5">DataReader::populate_airports</a></div><div class="ttdeci">std::unordered_map&lt; std::string, Airport * &gt; populate_airports(std::unordered_map&lt; std::pair&lt; std::string, std::string &gt;, std::vector&lt; Airport * &gt;, pair_hash &gt; &amp;cities)</div><div class="ttdoc">Extracts data from airports.csv.</div><div class="ttdef"><b>Definition</b> DataReader.cpp:49</div></div>
+<div class="ttc" id="aclass_flight_graph_html"><div class="ttname"><a href="class_flight_graph.html">FlightGraph</a></div><div class="ttdef"><b>Definition</b> FlightGraph.h:57</div></div>
+<div class="ttc" id="astructpair__hash_html"><div class="ttname"><a href="structpair__hash.html">pair_hash</a></div><div class="ttdef"><b>Definition</b> DataReader.h:18</div></div>
 </div><!-- fragment --></div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>

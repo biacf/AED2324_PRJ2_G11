@@ -29,9 +29,14 @@ FlightGraphV::FlightGraphV(Airport* airport) {
  * @param airline : Airline that performs the connection.
  */
 void FlightGraphV::addEdge(FlightGraphV *dest, Airline* airline) {
-    flights.push_back(FlightGraphE(dest, airline));
+    FlightGraphE edge(dest, airline);
+
+    //have to check when making graph undirected (articulation point calculation) , as it doesn't make sense to double existing edges
+    if(std::find(flights.begin(), flights.end(), edge) == flights.end()){
+        flights.push_back(edge);
+    }
     if (std::find(flights_from_airline.begin(), flights_from_airline.end(), airline) == flights_from_airline.end()) {
-        flights_from_airline.push_back(FlightGraphE(dest, airline));
+        flights_from_airline.emplace_back(edge);
     }
 }
 
@@ -66,13 +71,25 @@ FlightGraphE::FlightGraphE(FlightGraphV *dest, Airline* airline) {
 /**
  * @brief Operator override method for graph edges.
  *
- * Method
+ * Method that compares edges by the airline associated with it.
  *
- * @param pns
- * @return
+ * @param pns : Airline associated with edge.
+ * @return \b True if airlines are the same, \b false otherwise.
  */
 bool FlightGraphE::operator==( Airline* pns) const {
     return airline == pns;
+}
+
+/**
+ * @brief Operator override method for graph edges.
+ *
+ * Method that compares edges by checking if they have the same destination vertex and the same airline.
+ *
+ * @param edge : Edge to compare.
+ * @return \b True if edges are the same, \b false otherwise.
+ */
+bool FlightGraphE::operator==(FlightGraphE edge) const {
+    return (dest == edge.getDest() && airline == edge.getAirline());
 }
 
 /**
@@ -89,7 +106,7 @@ FlightGraphV *FlightGraph::findVertex(const std::string &code) const {
     for (auto v : flightvSet)
         if (v->getCode() == code)
             return v;
-    return NULL;
+    return nullptr;
 }
 
 /**
@@ -102,7 +119,7 @@ FlightGraphV *FlightGraph::findVertex(const std::string &code) const {
  * @return \b True if vertex was successfully added, \b false otherwise.
  */
 bool FlightGraph::addVertex(Airport* airport) {
-    if (findVertex(airport->getCode()) != NULL)
+    if (findVertex(airport->getCode()) != nullptr)
         return false;
     flightvSet.push_back(new FlightGraphV(airport));
     return true;
@@ -145,7 +162,7 @@ bool FlightGraph::removeVertex(const std::string &code) {
 bool FlightGraph::addEdge(const std::string &sourc, const std::string &dest, Airline* airline) const {
     auto v1 = findVertex(sourc);
     auto v2 = findVertex(dest);
-    if (v1 == NULL || v2 == NULL)
+    if (v1 == nullptr || v2 == nullptr)
         return false;
     v1->addEdge(v2,airline);
     return true;
@@ -162,10 +179,10 @@ bool FlightGraph::addEdge(const std::string &sourc, const std::string &dest, Air
  * @param dest : Destination airport code.
  * @return \b True if trip (<i>edge</i>) was successfully removed and \b false otherwise.
  */
-bool FlightGraph::removeEdge(const std::string &sourc, const std::string &dest) {
+bool FlightGraph::removeEdge(const std::string &sourc, const std::string &dest) const {
     auto v1 = findVertex(sourc);
     auto v2 = findVertex(dest);
-    if (v1 == NULL || v2 == NULL)
+    if (v1 == nullptr || v2 == nullptr)
         return false;
     return v1->removeEdgeTo(v2);
 }
@@ -182,7 +199,7 @@ bool FlightGraph::removeEdge(const std::string &sourc, const std::string &dest) 
  * @param countries : Reachable countries.
  * @param cities : Reachable cities.
  */
-void FlightGraph::getDestinations(std::string airport_code, int layovers, std::unordered_set<Airport*> &airports, std::unordered_set<std::string> &countries, std::unordered_set<std::string> &cities) {
+void FlightGraph::getDestinations(std::string airport_code, int layovers, std::unordered_set<Airport*> &airports, std::unordered_set<std::string> &countries, std::unordered_set<std::string> &cities) const {
     std::vector<Airport*> solutions;
     layovers++;
     solutions = AirportsAtDistanceXLayovers(airport_code, layovers);
@@ -199,11 +216,6 @@ void FlightGraph::getDestinations(std::string airport_code, int layovers, std::u
         }
     }
 }
-
-
-
-
-
 
 /**
  * @brief Get Airports that are a certain amount of layovers away. <BR><BR>
@@ -224,7 +236,7 @@ std::vector<Airport*> FlightGraph::AirportsAtDistanceXLayovers(const std::string
     }
 
     FlightGraphV *srcVertex = findVertex(source);
-    if(srcVertex != NULL) {
+    if(srcVertex != nullptr) {
         vers.push(srcVertex);
         srcVertex->setVisited(true);
         level[srcVertex->getCode()] = 0;
@@ -296,8 +308,8 @@ void FlightGraph::dfsArt(FlightGraphV* v, FlightGraphV* parent, std::set<Airport
  * @param destinations : Vector of destination airports.
  */
 void FlightGraph::findBestFlight(std::vector<Airport *> sources, std::vector<Airport *> destinations) {
-    std::unordered_map<FlightGraphV*, int> layovers; //tracks number of layovers
-    std::unordered_map<FlightGraphV*, FlightGraphV*> predecessor;
+    std::unordered_map<FlightGraphV*, int> layovers;
+    std::unordered_map<FlightGraphV*, std::vector<FlightGraphV*>> predecessors;
     int minLayoversToDest = INT_MAX;
     std::queue<FlightGraphV*> queue;
     std::set<FlightGraphV*> destinationVertices;
@@ -315,10 +327,11 @@ void FlightGraph::findBestFlight(std::vector<Airport *> sources, std::vector<Air
     }
 
 
-    //BFS
+
+    // prep for BFS
     for (auto source : sources) {
         FlightGraphV* sourceVertex = findVertex(source->getCode());
-        layovers[sourceVertex] = 0;
+        layovers[sourceVertex] = -1;
         queue.push(sourceVertex);
     }
     for (auto destination : destinations) {
@@ -326,57 +339,97 @@ void FlightGraph::findBestFlight(std::vector<Airport *> sources, std::vector<Air
         destinationVertices.insert(destVertex);
     }
 
+    // BFS
     while (!queue.empty()) {
         FlightGraphV* current = queue.front();
         queue.pop();
 
         for (auto edge : current->getFlights()) {
             FlightGraphV* next = edge.getDest();
-            if (layovers.find(next) == layovers.end() || layovers[next] > layovers[current] + 1) {
-                layovers[next] = layovers[current] + 1;
-                predecessor[next] = current;
-                queue.push(next);
+            int nextLayovers = layovers[current] + 1;
 
-                if (destinationVertices.find(next) != destinationVertices.end()) {
-                    if (layovers[next] < minLayoversToDest) {
-                        minLayoversToDest = layovers[next];
-                    }
+            if (layovers.find(next) == layovers.end() || layovers[next] > nextLayovers) {
+                layovers[next] = nextLayovers;
+                predecessors[next].clear();
+                predecessors[next].push_back(current);
+                queue.push(next);
+            }
+            else if (layovers[next] == nextLayovers) {
+                predecessors[next].push_back(current);
+            }
+
+            if (destinationVertices.find(next) != destinationVertices.end()) {
+                if (layovers[next] < minLayoversToDest) {
+                    minLayoversToDest = layovers[next];
                 }
             }
         }
     }
-
+    if(minLayoversToDest == -1){
+        std::cout << "You're already at your destination!" << std::endl;
+        return;
+    }
+    // output
     for (auto dest : destinationVertices) {
         if (layovers[dest] == minLayoversToDest) {
-            printPath(dest, predecessor);
+            printPaths(dest, predecessors);
         }
     }
 }
 
 /**
- * @brief Prints path from airport A to airport B.
+ * @brief Prints paths to destination.
  *
- * Helpful in displaying best flight options to user.
+ * For each destination, prints the path to every source airport that matches the minimum number of layovers (is in the predecessor vector).
  *
- * @param destination : Destination vertex.
- * @param predecessor : Map that associates an airport with its predecessor.
+ * @param destination : Destination airport being handled.
+ * @param predecessors : Map associating an airport with its predecessors.
  */
-void FlightGraph::printPath(FlightGraphV* destination, std::unordered_map<FlightGraphV*, FlightGraphV*>& predecessor) {
-    std::stack<FlightGraphV*> pathStack;
-    FlightGraphV* current = destination;
-    while (current != nullptr) {
-        pathStack.push(current);
-        current = predecessor[current];
-    }
+void FlightGraph::printPaths(FlightGraphV* destination, std::unordered_map<FlightGraphV*, std::vector<FlightGraphV*>>& predecessors) {
+    std::vector<std::vector<FlightGraphV*>> allPaths;
+    std::vector<FlightGraphV*> currentPath;
+    int i = 1;
 
-    // Print the path
-    while (!pathStack.empty()) {
-        FlightGraphV* vertex = pathStack.top();
-        pathStack.pop();
-        std::cout << vertex->getAirport()->getName() << " (" << vertex->getCode() << ")";
-        if (!pathStack.empty()) {
-            std::cout << " -> ";
+    findPaths(destination, predecessors, currentPath, allPaths);
+
+    // output
+    for (const auto& path : allPaths) {
+        std::cout << i << ". ";
+        for (const auto& vertex : path) {
+            std::cout << vertex->getAirport()->getName() << " (" << vertex->getCode() << ")";
+            if (vertex != path.back()) {
+                std::cout << " -> ";
+            }
+        }
+        i++;
+        std::cout << "\n" << std::endl;
+    }
+}
+
+/**
+ * @brief Method that finds all paths that lead to a destination.
+ *
+ * This method finds all possible paths that lead to a certain destination by checking its predecessors.
+ *
+ * @param vertex : Destinations being handled.
+ * @param predecessors : Map associating an airport with its predecessors.
+ * @param currentPath : Path being handled.
+ * @param allPaths : Vector that stores all paths reversed.
+ */
+void FlightGraph::findPaths(FlightGraphV* vertex, std::unordered_map<FlightGraphV*, std::vector<FlightGraphV*>>& predecessors, std::vector<FlightGraphV*>& currentPath, std::vector<std::vector<FlightGraphV*>>& allPaths) {
+    currentPath.push_back(vertex);
+
+    if (predecessors[vertex].empty()) {
+        std::vector<FlightGraphV*> reversePath(currentPath.rbegin(), currentPath.rend());
+        if (std::find(allPaths.begin(), allPaths.end(), reversePath) == allPaths.end()) {
+            allPaths.push_back(reversePath);
         }
     }
-    std::cout << std::endl;
+    else {
+        for (FlightGraphV* pred : predecessors[vertex]) {
+            findPaths(pred, predecessors, currentPath, allPaths);
+        }
+    }
+
+    currentPath.pop_back();
 }

@@ -51,6 +51,7 @@ public:
     FlightGraphV* getDest(){return dest;} /*! A getter method @return Flight destination */
     Airline* getAirline(){return airline;} /*! A getter method @return Airline */
     bool operator==(Airline* pns) const;
+    bool operator==(FlightGraphE edge) const;
 };
 
 class FlightGraph {
@@ -63,14 +64,15 @@ public:
     bool addVertex(Airport* airport);
     bool removeVertex(const std::string &code);
     bool addEdge(const std::string &sourc, const std::string &dest, Airline* airline) const;
-    bool removeEdge(const std::string &sourc, const std::string &dest);
+    bool removeEdge(const std::string &sourc, const std::string &dest) const;
     void setIndex(int i){index = i;}/*! A setter method */
     std::vector<FlightGraphV*> getFlightVSet() const{return flightvSet;} /*! A getter method @return Vector of airport vertexes */
-    void getDestinations(std::string airport_code, int layovers, std::unordered_set<Airport*> &airports, std::unordered_set<std::string> &countries, std::unordered_set<std::string> &cities);
+    void getDestinations(std::string airport_code, int layovers, std::unordered_set<Airport*> &airports, std::unordered_set<std::string> &countries, std::unordered_set<std::string> &cities) const;
     std::vector<Airport *> AirportsAtDistanceXLayovers(const std::string &source, int layovers) const;
     void dfsArt(FlightGraphV *v, FlightGraphV *parent, std::set<Airport*> &articulationPoints);
     void findBestFlight(std::vector<Airport*> sources, std::vector<Airport*> destinations);
-    void printPath(FlightGraphV *destination, std::unordered_map<FlightGraphV *, FlightGraphV *> &predecessor);
+    void findPaths(FlightGraphV *vertex, std::unordered_map<FlightGraphV *, std::vector<FlightGraphV *>> &predecessors,std::vector<FlightGraphV *> &currentPath, std::vector<std::vector<FlightGraphV *>> &allPaths);
+    void printPaths(FlightGraphV *destination,std::unordered_map<FlightGraphV *, std::vector<FlightGraphV *>> &predecessors);
 };
 
 
